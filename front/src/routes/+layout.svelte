@@ -15,7 +15,7 @@
 	</footer>
 </div>
 
-<style>
+<style lang="scss">
 	.app {
 		display: flex;
 		flex-direction: column;
@@ -41,7 +41,7 @@
 		padding: 12px;
 	}
 
-	footer a {
+	footer {
 		font-weight: bold;
 	}
 
