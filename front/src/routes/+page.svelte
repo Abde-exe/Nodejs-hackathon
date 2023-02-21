@@ -1,6 +1,6 @@
 <script>
 	import Counter from './Counter.svelte';
-	import Board from '../lib/components/Board.svelte'
+	import Board from '../components/Board.svelte'
 </script>
 
 <svelte:head>

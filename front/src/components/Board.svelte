@@ -1,9 +1,7 @@
-<script>
-	import board_bg from '$static/bg_board.jpg';
-</script>
+
 <section>
     <div class="background">
-        <img src="{board_bg}" alt="background" />
+        <img src="../../bg_board.jpg" alt="background" />
     </div>
 </section>
 
