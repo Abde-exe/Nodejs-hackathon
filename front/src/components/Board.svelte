@@ -1,7 +1,9 @@
-
+<script>
+    import bg_board from "../lib/bg_board.jpg";
+</script>
 <section>
     <div class="background">
-        <img src="../../bg_board.jpg" alt="background" />
+        <img src="{bg_board}" alt="background" />
     </div>
 </section>
 
