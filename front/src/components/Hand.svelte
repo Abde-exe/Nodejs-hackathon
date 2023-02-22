@@ -46,8 +46,9 @@
             img: '' 
         }
 	];
-</script>
 
+    
+</script>
 
 <ul class="cards">
     {#each cardsInHand as card}
