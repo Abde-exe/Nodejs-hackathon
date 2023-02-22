@@ -2,31 +2,36 @@
 	import Board from '../components/Board.svelte';
 	import Hand from '../components/Hand.svelte';
 	import Deck from '../components/Deck.svelte';
-	import PlayerBoard from '../components/PlayerBoard.svelte'
-    import {io} from "socket.io-client";
-    import {onDestroy, onMount} from "svelte";
+	import PlayerBoard from '../components/PlayerBoard.svelte';
+	import { io } from 'socket.io-client';
+	import { onDestroy, onMount } from 'svelte';
 
-    const socket = io('http://localhost:9999');
+	const socket = io('http://localhost:9999');
 
-    let nPlayer = undefined
+	let nPlayer = undefined;
 
-    onMount(() => {
-        socket.on('connect', () => {
-            socket.emit("join_room", "room1", nPlayer, (player) => {
-                    console.log(player)
-                    nPlayer = player
-                }
-            );
-        });
-        socket.on('disconnect', () => {
-            console.log('disconnected');
-        });
-    })
+	onMount(() => {
+		socket.on('connect', () => {
+			socket.emit('join_room', 'room1', nPlayer, (player) => {
+				console.log(player);
+				nPlayer = player;
+			});
+		});
+		socket.on('disconnect', () => {
+			console.log('disconnected');
+		});
+	});
 
-    onDestroy(() => {
-        socket.disconnect();
-    })
+	//socket.on("get_playerInfo")
+	onDestroy(() => {
+		socket.disconnect();
+	});
 
+	const onDrawCard = () => {
+		socket.emit('send_pickCard', {nPlayer });
+		console.log(`${nPlayer} picked one card`);
+	};
+	//todo ajouter la carte a la hand du joueur
 </script>
 
 <svelte:head>
@@ -39,25 +44,25 @@
 		<Board />
 	</section>
 	<section class="top-player">
-		<Hand isPlayer={false}/>
+		<Hand isPlayer={false} />
 		<PlayerBoard />
 	</section>
-	<section></section>
+	<section />
 	<section class="left-player">
 		<PlayerBoard />
-		<Hand isPlayer={false}/>
+		<Hand isPlayer={false} />
 	</section>
 	<section class="deck-area">
-		<Deck />
+		<Deck drawCard= {onDrawCard} />
 	</section>
 	<section class="right-player">
 		<PlayerBoard />
-		<Hand isPlayer={false}/>
+		<Hand isPlayer={false} />
 	</section>
-	<section></section>
+	<section />
 	<section class="active-player">
 		<PlayerBoard />
-		<Hand isPlayer={true}/>
+		<Hand isPlayer={true} />
 	</section>
 </div>
 
@@ -72,7 +77,7 @@
 	.active-player {
 		gap: 10px;
 		display: flex;
-		flex-direction: column;		
+		flex-direction: column;
 		align-items: center;
 	}
 	.top-player {
@@ -91,7 +96,7 @@
 		align-items: center;
 		transform: rotate(90deg);
 	}
-	.right-player{
+	.right-player {
 		gap: 10px;
 		display: flex;
 		flex-direction: column;
