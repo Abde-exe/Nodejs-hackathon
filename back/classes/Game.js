@@ -1,8 +1,8 @@
-import { shuffleArray } from '../utils/suffleArray.js';
+import { shuffleArray } from '../utils/shuffleArray.js';
 import { createCards } from './Card.js';
 import { Player } from './Player.js';
 
-class Game {
+export class Game {
   constructor(room = 'room', players) {
     this.room = 'room';
     this.players = [
