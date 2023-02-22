@@ -3,8 +3,8 @@ import { createCards } from './Card.js';
 import { Player } from './Player.js';
 
 export class Game {
-  constructor(room = 'room', players) {
-    this.room = 'room';
+  constructor(room = 'room1', players) {
+    this.room = room;
     this.players = players;
     this.deck = createCards();
     this.defausse = [];
@@ -24,7 +24,8 @@ export class Game {
   };
 
   //piocher une carte
-  drawOneCard = (player) => {
+  drawOneCard = (playerIndex) => {
+    var player = players[playerIndex];
     if (player.hand > 6) {
       return 'Peut pas piocher une nouvelle carte';
     } else {

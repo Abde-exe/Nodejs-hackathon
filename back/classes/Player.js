@@ -18,7 +18,7 @@ export class Player {
     this.progress = 0;
     this.img = img;
     this.color = color;
-    this.hand = [cardTest];
+    this.hand = [];
     this.state = '';
     this.specialCards = [];
   }
