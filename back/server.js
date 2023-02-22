@@ -81,6 +81,9 @@ io.on("connection", (socket) => {
         jsonGame.players[nPlayer - 1].playCard(card,nPlayer2 - 1)
 
         if (card.type === "distance") {
+          if (isGameFinished()){
+            sendAll("get_finished", jsonGame)
+          }
             sendAll("get_distance", {
                 action: "distance",
                 nPlayer: nPlayer2,
@@ -101,14 +104,30 @@ io.on("connection", (socket) => {
                 card: card,
             })
         }
+        sendAll("get_nextPlayer", jsonGame.passPlayer() + 1);
+
     });
+   
 
-    socket.on("send_discardCard", ({nPlayer,card}) => {
-        //TODO: traitement de la carte défaussée et modification du JSON
-
-        sendAll("get_discardCard", null); //TODO: doit signaler que le joueur a défaussé une carte
+    socket.on("send_discardCard", ({nPlayer,card}) => {  
+      jsonGame.players[nPlayer - 1].toDefausse(jsonGame, card)
+  
+          sendAll("get_discardCard", {
+            action: "discard card",
+            nPlayer: nPlayer,
+            card: card
+          });
     });
 });
+isGameFinished=()=>{
+  jsonGame.players.forEach(player => {
+    //un joueur a parcouru 4000km
+   if(player.progress === 4000) return true
+
+    //aucun joueur n'a parcouru 4000km
+   return false
+});
+}
 
 httpServer.listen(9999, () => {
     console.log(`Socket IO is running on port 9999.`);
