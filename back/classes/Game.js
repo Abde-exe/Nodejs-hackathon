@@ -44,7 +44,9 @@ export class Game {
 
   //passer d'un joueur a l'autre
   passPlayer = () => {
-    this.currentPlayerIndex = (this.currentPlayerIndex + 1) % 4;
+    let newIndex = (this.currentPlayerIndex + 1) % 4;
+    this.currentPlayerIndex = newIndex;
+    return newIndex;
   };
 }
 
