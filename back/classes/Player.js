@@ -31,4 +31,17 @@ export class Player {
         break;
     }
   };
+  defausse = (game, card, player) => {
+    //recupere la carte dans la main
+    const cardDefaussed = player.hand.find(
+      (handCard) => handCard.id == card.id
+    );
+    //retire la carte en question
+    player.hand = player.hand.filter(
+      (handCard) => (handCard.id = !cardDefaussed)
+    );
+
+    //ajoute la carte a la defausse
+    game.defausse.push(cardDefaussed);
+  };
 }

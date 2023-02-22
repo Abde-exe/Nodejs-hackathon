@@ -1,3 +1,4 @@
+import { shuffleArray } from '../utils/suffleArray.js';
 import { createCards } from './Card.js';
 import { Player } from './Player.js';
 
@@ -51,7 +52,15 @@ class Game {
       return drawedCard;
     }
   };
+
+  // remplir la pioche avec les cartes defaussées
+  defausseToDeck = () => {
+    if (this.deck.length == 0) {
+      this.deck = shuffleArray(this.defausse);
+    }
+  };
 }
+
 //const game = new Game();
 //console.log('this.game.deck', game.deck.length);
 //game.drawOneCard(game.players[0]);
