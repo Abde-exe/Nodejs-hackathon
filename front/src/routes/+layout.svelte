@@ -52,6 +52,11 @@
 	<section class="active-player">
 		<Hand isPlayer={true}/>
 	</section>
+
+	<footer>
+		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+
+	</footer>
 </div>
 
 <style lang="scss">
@@ -73,6 +78,11 @@
 		justify-content: center;
 		align-items: flex-end;
 		transform: rotate(90deg);
+		flex-direction: column;
+		padding: 1rem;
+		width: 100%;
+		margin: 0 auto;
+		box-sizing: border-box;
 	}
 
 	.right-player{
