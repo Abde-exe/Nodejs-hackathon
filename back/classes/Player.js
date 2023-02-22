@@ -21,6 +21,7 @@ export class Player {
     this.hand = [];
     this.state = '';
     this.specialCards = [];
+    this.me = false;
   }
   //jouer une carte
   playCard = (card, player) => {
