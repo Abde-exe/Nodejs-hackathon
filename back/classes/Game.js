@@ -1,4 +1,5 @@
-import { createCards, DistanceCard, distanceCards } from './Card';
+import { createCards } from './Card.js';
+import { Player } from './Player.js';
 
 class Game {
   constructor(room = 'room', players) {
@@ -28,4 +29,16 @@ class Game {
     this.deck = createCards();
     this.defausse = [];
   }
+
+  distributeinitialCards = () => {
+    this.players.forEach((player) => {
+      //ajouter 6 cartes à la main de chaque joueur depuis le deck (pioche)
+      for (let i = 1; i <= 6; i++) {
+        player.hand.push(this.deck.shift());
+      }
+    });
+  };
 }
+const game = new Game();
+game.distributeinitialCards();
+console.log('players', game.players[0]);
