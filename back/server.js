@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
         socket.to(socketId).emit(name, data);
     }
 
-    socket.on("send_pickCard", ({nPlayer,name}) => {
+    socket.on("send_pickCard", ({nPlayer}) => {
         const newCard = jsonGame.drawOneCard(nPlayer - 1);
 
         jsonGame.defausseToDeck();
@@ -73,6 +73,7 @@ io.on("connection", (socket) => {
         sendAllExceptSender("get_pickCard", {
             action: "pickCard",
             nPlayer: nPlayer,
+            pickedCard : newCard
         });
         sendTo("get_pickCard", nPlayer, newCard);
     });
