@@ -3,6 +3,30 @@
 	import Hand from '../components/Hand.svelte';
 	import Deck from '../components/Deck.svelte';
 	import PlayerBoard from '../components/PlayerBoard.svelte'
+    import {io} from "socket.io-client";
+    import {onDestroy, onMount} from "svelte";
+
+    const socket = io('http://localhost:9999');
+
+    let nPlayer = undefined
+
+    onMount(() => {
+        socket.on('connect', () => {
+            socket.emit("join_room", "room1", nPlayer, (player) => {
+                    console.log(player)
+                    nPlayer = player
+                }
+            );
+        });
+        socket.on('disconnect', () => {
+            console.log('disconnected');
+        });
+    })
+
+    onDestroy(() => {
+        socket.disconnect();
+    })
+
 </script>
 
 <svelte:head>
