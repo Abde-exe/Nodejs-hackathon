@@ -18,13 +18,13 @@ export class Player {
   playCard = (card, player) => {
     switch (card.type) {
       case CardType.SPEC:
-        //appler methode de specialCard
+        card.toSetSpecial(player)
         break;
       case CardType.BON:
-        //appler methode de specialCard
+        card.toSetBonus(player);
         break;
       case CardType.MAL:
-        //appler methode de specialCard
+        card.toSetMalus(player);
         break;
       case CardType.DIST:
         card.toProgress(player);
