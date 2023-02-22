@@ -13,7 +13,7 @@ export class Game {
   }
 
   //distribuer les cartes initiales a chaque joueur
-  distributeinitialCards = () => {
+  distributeInitialCards = () => {
     this.players.forEach((player) => {
       //ajouter 6 cartes à la main de chaque joueur depuis le deck (pioche)
       for (let i = 1; i <= 6; i++) {
@@ -25,7 +25,7 @@ export class Game {
 
   //piocher une carte
   drawOneCard = (playerIndex) => {
-    var player = players[playerIndex];
+    var player = this.players[playerIndex];
     if (player.hand > 6) {
       return 'Peut pas piocher une nouvelle carte';
     } else {
@@ -37,7 +37,7 @@ export class Game {
 
   // remplir la pioche avec les cartes defaussées
   defausseToDeck = () => {
-    if (this.deck.length == 0) {
+    if (this.deck.length === 0) {
       this.deck = shuffleArray(this.defausse);
     }
   };
