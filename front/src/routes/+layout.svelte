@@ -1,53 +1,75 @@
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
+	import Hand from '../components/Hand.svelte';
+	import Deck from '../components/Deck.svelte';
 </script>
 
-<div class="app">
-	<Header />
+<div class="layout">
 
 	<main>
 		<slot />
 	</main>
-
-	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-	</footer>
+	<section class="top-player">
+		<Hand isPlayer={false}/>
+	</section>
+	<section></section>
+	<section class="left-player">
+		<Hand isPlayer={false}/>
+	</section>
+	<section class="deck-area">
+		<Deck />
+	</section>
+	<section class="right-player">
+		<Hand isPlayer={false}/>
+	</section>
+	<section></section>
+	<section class="active-player">
+		<Hand isPlayer={true}/>
+	</section>
 </div>
 
 <style lang="scss">
-	.app {
+
+	.active-player {
 		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
+		flex-direction: column-reverse;		
+		align-items: center;
 	}
 
-	main {
-		flex: 1;
+	.top-player {
 		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
+		justify-content: center;
+		align-items: flex-end;
+		transform: rotate(180deg);
+	}
+	.left-player {
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+		transform: rotate(90deg);
 	}
 
-	footer {
+	.right-player{
 		display: flex;
-		flex-direction: column;
+		justify-content: center;
+		align-items: flex-end;
+		transform: rotate(-90deg);
+	}
+
+	.layout {
+		display: grid;
+		grid-template-columns: 1fr 2fr 1fr;
+		grid-template-rows: repeat(3, 1fr);
+		grid-column-gap: 0px;
+		grid-row-gap: 0px;
+		height: 100vh;
+	}
+
+	.deck-area {
+		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 12px;
 	}
-
-	footer {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
+	
 </style>
