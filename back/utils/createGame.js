@@ -8,7 +8,7 @@ export function createGame() {
     const player4 = new Player("Player 4", null, "#888888")
 
     const game = new Game("room", [player1, player2, player3, player4])
-    game.distributeInitialCards()
+    game.distributeinitialCards()
 
     return game
 }
