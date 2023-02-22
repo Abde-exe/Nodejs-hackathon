@@ -4,6 +4,8 @@
     import './styles.css';
     import {io} from "socket.io-client";
     import {onDestroy, onMount} from "svelte";
+	import Hand from '../components/Hand.svelte';
+	import Deck from '../components/Deck.svelte';
 
     const socket = io('http://localhost:9999');
 
