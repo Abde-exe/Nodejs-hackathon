@@ -1,5 +1,6 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
+import {createGame} from "./utils/createGame.js";
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -9,6 +10,8 @@ const io = new Server(httpServer, {
     },
 });
 
+let jsonGame = {};
+
 io.on("connection", (socket) => {
     socket.on("join_room", (room, nPlayer, callback) => {
         console.log("Connected");
@@ -16,6 +19,20 @@ io.on("connection", (socket) => {
         socket.data.room = room;
 
         callback(nPlayer ?? io.sockets.adapter.rooms.get(room).size);
+
+        if(io.sockets.adapter.rooms.get(room).size === 1 && !nPlayer) {
+            jsonGame = createGame();
+            console.log(jsonGame)
+        }
+
+        const socketsInRoom = io.sockets.adapter.rooms.get(room);
+        if(socketsInRoom.size === 4) {
+            Array.from(socketsInRoom).forEach((socketId) => {
+                const socketIndex = Array.from(socketsInRoom).indexOf(socketId);
+                //Send player info to each player
+                io.to(socketId).emit("get_playerInfo", jsonGame.players[socketIndex]);
+            });
+        }
     });
 
     /**
@@ -37,14 +54,14 @@ io.on("connection", (socket) => {
     }
 
     /**
-    * Sending to on client in room
-    * @param {string} name
+     * Sending to on client in room
+     * @param {string} name
      * @param {*} nPlayer
-    * @param {*} data
+     * @param {*} data
      */
     const sendTo = (name, nPlayer, data) => {
         const socketId = io.sockets.adapter.rooms.get(socket.data.room)[nPlayer - 1];
-        socket.to(socket.data.room).to(socketId).emit(name, data);
+        socket.to(socketId).emit(name, data);
     }
 
     socket.on("send_pickCard", ({nPlayer,name}) => {
