@@ -1,5 +1,6 @@
 import {
   bonusCards,
+  CardType,
   characterCards,
   distanceCards,
   malusCards,
@@ -31,16 +32,25 @@ export class SpecialCard extends Card {
   constructor(name, description, type, number, img) {
     super(name, description, type, number, img);
   }
+  toSetSpecial(player) {
+    player.specialCards.push(this);
+  }
 }
 export class BonusCard extends Card {
   constructor(name, description, type, number, img) {
     super(name, description, type, number, img);
+  }
+  toSetBonus(player) {
+    player.state = this.name;
   }
 }
 
 export class MalusCard extends Card {
   constructor(name, description, type, number, img) {
     super(name, description, type, number, img);
+  }
+  toSetMalus(player) {
+    player.state = this.name;
   }
 }
 export class CharacterCard extends Card {
