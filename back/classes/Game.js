@@ -29,6 +29,8 @@ class Game {
     ];
     this.deck = createCards();
     this.defausse = [];
+    this.currentPlayerIndex = 0;
+    //this.currentPlayer = this.players[this.currentPlayerIndex];
   }
 
   //distribuer les cartes initiales a chaque joueur
@@ -58,6 +60,11 @@ class Game {
     if (this.deck.length == 0) {
       this.deck = shuffleArray(this.defausse);
     }
+  };
+
+  //passer d'un joueur a l'autre
+  passPlayer = () => {
+    this.currentPlayerIndex = (this.currentPlayerIndex + 1) % 4;
   };
 }
 

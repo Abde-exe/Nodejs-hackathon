@@ -1,5 +1,14 @@
-import { CardType } from './cardsAssets';
-
+import { DistanceCard, SpecialCard } from './Card.js';
+import { CardType } from './cardsAssets.js';
+const cardTest = {
+  id: 0,
+  name: 'Bombe bleue',
+  description: '',
+  type: CardType.DIST,
+  number: 10,
+  img: '',
+  distance: 25,
+};
 export class Player {
   constructor(
     pseudo = 'Harry',
@@ -10,15 +19,17 @@ export class Player {
     this.progress = 0;
     this.img = img;
     this.color = color;
-    this.hand = [];
-    this.state = null;
+    this.hand = [cardTest];
+    this.state = '';
     this.specialCards = [];
   }
-  //joueur une carte
+  //jouer une carte
   playCard = (card, player) => {
+    console.log('card.name', card.distance);
+    //attriuer le bon effet de la carte
     switch (card.type) {
       case CardType.SPEC:
-        card.toSetSpecial(player)
+        card.toSetSpecial(player);
         break;
       case CardType.BON:
         card.toSetBonus(player);
@@ -30,18 +41,33 @@ export class Player {
         card.toProgress(player);
         break;
     }
+    this.removeCardFromHand(card.id);
   };
-  defausse = (game, card, player) => {
-    //recupere la carte dans la main
-    const cardDefaussed = player.hand.find(
-      (handCard) => handCard.id == card.id
-    );
-    //retire la carte en question
-    player.hand = player.hand.filter(
-      (handCard) => (handCard.id = !cardDefaussed)
-    );
 
+  removeCardFromHand = (cardId) => {
+    //retire la carte de la main
+    this.hand = this.hand.filter((handCard) => (handCard.id = cardId));
+  };
+
+  toDefausse = (game, card) => {
+    //recupere la carte dans la main
+    const cardDefaussed = this.hand.find((handCard) => handCard.id == card.id);
+    this.removeCardFromHand(card.id);
     //ajoute la carte a la defausse
     game.defausse.push(cardDefaussed);
   };
+  p;
 }
+
+let playerA = new Player();
+let cardTruc = new DistanceCard(
+  0,
+  'Bombe bleue',
+  '',
+  CardType.DIST,
+  10,
+  '',
+  25
+);
+playerA.playCard(cardTruc, playerA);
+console.log('playerA', playerA);
