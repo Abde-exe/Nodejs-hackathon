@@ -1,3 +1,5 @@
+import { CardType } from './cardsAssets';
+
 export class Player {
   constructor(
     pseudo = 'Harry',
@@ -12,4 +14,21 @@ export class Player {
     this.state = null;
     this.specialCards = [];
   }
+  //joueur une carte
+  playCard = (card, player) => {
+    switch (card.type) {
+      case CardType.SPEC:
+        //appler methode de specialCard
+        break;
+      case CardType.BON:
+        //appler methode de specialCard
+        break;
+      case CardType.MAL:
+        //appler methode de specialCard
+        break;
+      case CardType.DIST:
+        card.toProgress(player);
+        break;
+    }
+  };
 }
