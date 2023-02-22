@@ -82,6 +82,11 @@
         background-color: rgb(231, 217, 22);
         border: solid 1px black;
         cursor: pointer;
+        transition: all 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-85px) scale(1.5);
+        transition: all 0.3s;
     }
     .card--bg {
         width: 88px;

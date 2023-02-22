@@ -74,6 +74,7 @@
 		display: flex;
 		flex-direction: column;		
 		align-items: center;
+		transform: translateY(40px);
 	}
 	.top-player {
 		gap: 10px;
@@ -102,7 +103,7 @@
 	.layout {
 		display: grid;
 		grid-template-columns: 1fr 1.5fr 1fr;
-		grid-template-rows: 1fr 300px 1fr;
+		grid-template-rows: 1fr 300px 1.2fr;
 		grid-column-gap: 0px;
 		grid-row-gap: 0px;
 		height: 100vh;
