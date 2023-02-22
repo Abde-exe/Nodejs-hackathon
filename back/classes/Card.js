@@ -1,4 +1,4 @@
-import { shuffleArray } from '../utils/suffleArray.js';
+import { shuffleArray } from '../utils/shuffleArray.js';
 import {
   bonusCards,
   CardType,
@@ -20,11 +20,16 @@ export class Card {
 }
 
 export class DistanceCard extends Card {
-  constructor(name, description, type, number, img, distance) {
-    super(name, description, type, number, img);
+  constructor(id, name, description, type, number, img, distance) {
+    super(id, name, description, type, number, img);
     this.distance = distance;
   }
+  // get distance() {
+  //   return this._distance;
+  // }
   toProgress(player) {
+    //console.log('player2', player);
+    //console.log('this.distance', this.distance);
     player.progress += this.distance;
   }
 }
@@ -63,12 +68,12 @@ export class CharacterCard extends Card {
 // create all cards
 export const createCards = () => {
   let cardList = [];
-
+  var ids = 0;
   //create distance cards
   distanceCards.forEach((card) => {
     for (let i = 1; i <= card.number; i++) {
       let newCard = new DistanceCard(
-        card.id,
+        ids,
         card.name,
         card.description,
         card.number,
@@ -76,6 +81,7 @@ export const createCards = () => {
         card.img,
         card.distance
       );
+      ids++;
       cardList.push(newCard);
     }
   });
@@ -83,13 +89,14 @@ export const createCards = () => {
   specialCards.forEach((card) => {
     for (let i = 1; i <= card.number; i++) {
       let newCard = new SpecialCard(
-        card.id,
+        ids,
         card.name,
         card.description,
         card.number,
         card.type,
         card.img
       );
+      ids++;
       cardList.push(newCard);
     }
   });
@@ -97,13 +104,14 @@ export const createCards = () => {
   bonusCards.forEach((card) => {
     for (let i = 1; i <= card.number; i++) {
       let newCard = new BonusCard(
-        card.id,
+        ids,
         card.name,
         card.description,
         card.number,
         card.type,
         card.img
       );
+      ids++;
       cardList.push(newCard);
     }
   });
@@ -111,13 +119,14 @@ export const createCards = () => {
   malusCards.forEach((card) => {
     for (let i = 1; i <= card.number; i++) {
       let newCard = new MalusCard(
-        card.id,
+        ids,
         card.name,
         card.description,
         card.number,
         card.type,
         card.img
       );
+      ids++;
       cardList.push(newCard);
     }
   });
@@ -125,13 +134,14 @@ export const createCards = () => {
   // characterCards.forEach((card) => {
   //   for (let i = 1; i <= card.number; i++) {
   //     let newCard = new CharacterCard(
-  //       card.id,
+  //       ids,
   //       card.name,
   //       card.description,
   //       card.number,
   //       card.type,
   //       card.img
   //     );
+  //    ids++;
   //     cardList.push(newCard);
   //   }
   // });
