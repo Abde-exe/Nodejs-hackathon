@@ -104,29 +104,30 @@ io.on("connection", (socket) => {
                 card: card,
             })
         }
-        sendAll("get_nextPlayer", jsonGame.passPlayer() + 1);
 
+        sendAll("get_nextPlayer", jsonGame.passPlayer() + 1);
     });
    
 
     socket.on("send_discardCard", ({nPlayer,card}) => {  
       jsonGame.players[nPlayer - 1].toDefausse(jsonGame, card)
-  
-          sendAll("get_discardCard", {
-            action: "discard card",
-            nPlayer: nPlayer,
-            card: card
-          });
+
+      sendAllExceptSender("get_discardCard", {
+        action: "discard card",
+        nPlayer: nPlayer,
+        card: card
+      });
     });
 });
-isGameFinished=()=>{
-  jsonGame.players.forEach(player => {
-    //un joueur a parcouru 4000km
-   if(player.progress === 4000) return true
 
-    //aucun joueur n'a parcouru 4000km
-   return false
-});
+const isGameFinished = () => {
+    jsonGame.players.forEach(player => {
+        //un joueur a parcouru 4000km
+        if(player.progress === 1000) return true
+
+        //aucun joueur n'a parcouru 4000km
+        return false
+    });
 }
 
 httpServer.listen(9999, () => {
