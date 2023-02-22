@@ -24,9 +24,7 @@ export class DistanceCard extends Card {
     super(id, name, description, type, number, img);
     this.distance = distance;
   }
-  // get distance() {
-  //   return this._distance;
-  // }
+
   toProgress(player) {
     //console.log('player2', player);
     //console.log('this.distance', this.distance);
@@ -35,16 +33,16 @@ export class DistanceCard extends Card {
 }
 
 export class SpecialCard extends Card {
-  constructor(name, description, type, number, img) {
-    super(name, description, type, number, img);
+  constructor(id, name, description, type, number, img) {
+    super(id, name, description, type, number, img);
   }
   toSetSpecial(player) {
     player.specialCards.push(this);
   }
 }
 export class BonusCard extends Card {
-  constructor(name, description, type, number, img) {
-    super(name, description, type, number, img);
+  constructor(id, name, description, type, number, img) {
+    super(id, name, description, type, number, img);
   }
   toSetBonus(player) {
     player.state = this.name;
@@ -52,16 +50,16 @@ export class BonusCard extends Card {
 }
 
 export class MalusCard extends Card {
-  constructor(name, description, type, number, img) {
-    super(name, description, type, number, img);
+  constructor(id, name, description, type, number, img) {
+    super(id, name, description, type, number, img);
   }
   toSetMalus(player) {
     player.state = this.name;
   }
 }
 export class CharacterCard extends Card {
-  constructor(name, description, type, number, img) {
-    super(name, description, type, number, img);
+  constructor(id, name, description, type, number, img) {
+    super(id, name, description, type, number, img);
   }
 }
 

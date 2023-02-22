@@ -1,4 +1,3 @@
-import { DistanceCard, SpecialCard } from './Card.js';
 import { CardType } from './cardsAssets.js';
 const cardTest = {
   id: 0,
@@ -56,18 +55,9 @@ export class Player {
     //ajoute la carte a la defausse
     game.defausse.push(cardDefaussed);
   };
-  p;
 }
 
-let playerA = new Player();
-let cardTruc = new DistanceCard(
-  0,
-  'Bombe bleue',
-  '',
-  CardType.DIST,
-  10,
-  '',
-  25
-);
-playerA.playCard(cardTruc, playerA);
-console.log('playerA', playerA);
+// let playerA = new Player();
+// let cardTruc = new BonusCard(0, 'Bombe bleue', '', CardType.BON, 10, '');
+// playerA.playCard(cardTruc, playerA);
+// console.log('playerA', playerA);
