@@ -19,13 +19,13 @@ export class Player {
     this.img = img;
     this.color = color;
     this.hand = [];
-    this.state = '';
+    this.state = {};
     this.specialCards = [];
+    this.distanceCard= {};
     this.me = false;
   }
   //jouer une carte
   playCard = (card, player) => {
-    console.log('card.name', card.distance);
     //attriuer le bon effet de la carte
     switch (card.type) {
       case CardType.SPEC:

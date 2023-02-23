@@ -8,6 +8,7 @@
     import Chat from "../../components/Chat.svelte";
 
     import {blockActions} from "../../utils/blockActions.js";
+    import {canPutCard} from "../../utils/canPutCard.js";
 
 	import PlayerInfo from '../../components/PlayerInfo.svelte';
 
@@ -15,8 +16,6 @@
     const socket = io('http://localhost:9999');
 
     let nPlayer = undefined;
-    let nPlayer2 = undefined;
-    let card = undefined;
 
     let players = [];
     let me = undefined;
@@ -48,10 +47,6 @@
             me.hand = [...me.hand, newCard]
         });
 
-        // socket.on('get_playCard', (data) => {
-        //     console.log(data);
-        // })
-
         socket.on('get_nextPlayer', (nextPlayer) => {
             if(nPlayer === nextPlayer) {
                 blockActions(false)
@@ -61,13 +56,32 @@
             console.log(`${nPlayer} is next player`);
         });
 
+        socket.on('get_playCard', ({action,nPlayer, card}) => {
+            console.log(`${nPlayer} get ${card.name}`);
+
+            let newPlayers = [...players]
+
+            if(card.type === "Spéciale") newPlayers[nPlayer - 1].specialCards.push(card)
+            else if (card.type === "Bonus" || card.type === "Malus"){
+                newPlayers[nPlayer - 1].state = card
+            }
+            else if(card.type === "Distance"){
+                newPlayers[nPlayer - 1].distanceCard = card
+            }
+
+            players = [...newPlayers]
+        });
+
         socket.on('disconnect', () => {
             console.log('disconnected');
         });
     });
 
     onDestroy(() => {
-        socket.disconnect();
+        socket.off('get_playerInfo');
+        socket.off('get_pickCard');
+        socket.off('get_newCard');
+        socket.off('get_nextPlayer');
     });
 
     const onDrawCard = () => {
@@ -81,13 +95,20 @@
         }
     };
 
-    // const onPlayCard = () => {
-    //     if(me.hand.length < 7){
-    //         socket.emit('send_playCard', {nPlayer, nPlayer2, card});
-    //         console.log(`${nPlayer} uses ${card} against ${nPlayer2}`)
-    //     }
-    // };
+    const playCard = (target,card) => {
+        let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo) + 1
 
+        const playerMe = players.find((player)=>player.me)
+        const cardIndex = playerMe.hand.findIndex((cardPlayer)=>cardPlayer.id === card.id)
+        playerMe.hand.splice(cardIndex,1)
+        me = {...playerMe}
+
+        socket.emit('send_playCard', {
+            nPlayer: nPlayer,
+            nPlayer2: nPlayer2,
+            card: card
+        });
+    }
 </script>
 
 <svelte:head>
@@ -108,7 +129,7 @@
         <Chat />
     </section>
     <section class="left-player">
-        <PlayerBoard />
+        <PlayerBoard specialCard={playersWithoutMe[1]?.specialCards} stateCard={playersWithoutMe[1]?.state} milesCard={playersWithoutMe[1]?.distanceCard}/>
         <Hand isPlayer={false} cards={playersWithoutMe[1]?.hand}/>
         <PlayerInfo player={playersWithoutMe[1]} position={"left"}/>
     </section>
@@ -116,18 +137,15 @@
         <Deck drawCard={onDrawCard} />
     </section>
     <section class="right-player">
-        <PlayerBoard />
-            <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand} />
-            <PlayerInfo player={playersWithoutMe[2]} position={"right"}/>
-
+        <PlayerBoard specialCard={playersWithoutMe[2]?.specialCards}  stateCard={playersWithoutMe[2]?.state} milesCard={playersWithoutMe[2]?.distanceCard}/>
+        <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand}/>
+        <PlayerInfo player={playersWithoutMe[2]} position={"right"}/>
     </section>
     <section></section>
     <section class="active-player">
-        <PlayerBoard />
-        <div class="playerInfo">
-        <Hand isPlayer={true} cards={me?.hand}/>
+        <PlayerBoard specialCard={me?.specialCards} stateCard={me?.state} milesCard={me?.distanceCard}/>
+        <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard}/>
         <PlayerInfo player={me}/>
-        </div>
     </section>
 </div>
 
@@ -187,7 +205,7 @@
     .playerInfo{
       display: flex;
 
-        
+
     }
     #pItop{
 
