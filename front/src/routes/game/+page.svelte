@@ -8,6 +8,7 @@
     import Chat from "../../components/Chat.svelte";
 
     import {blockActions} from "../../utils/blockActions.js";
+    import {canPutCard} from "../../utils/canPutCard.js";
 
 	import PlayerInfo from '../../components/PlayerInfo.svelte';
 
@@ -71,7 +72,10 @@
     });
 
     onDestroy(() => {
-        socket.disconnect();
+        socket.off('get_playerInfo');
+        socket.off('get_pickCard');
+        socket.off('get_newCard');
+        socket.off('get_nextPlayer');
     });
 
     const onDrawCard = () => {
@@ -84,6 +88,15 @@
             listMessage.appendChild(message);
         }
     };
+
+    const playCard = (target,card) => {
+        let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo)
+        socket.emit('send_playCard', {
+            nPlayer: nPlayer,
+            nPlayer2: nPlayer2,
+            card: card
+        });
+    }
 </script>
 
 <svelte:head>
@@ -119,10 +132,8 @@
     <section></section>
     <section class="active-player">
         <PlayerBoard specialCard={me?.specialCards} stateCard={me?.state} milesCard={me?.distanceCard}/>
-        <div class="playerInfo">
-        <Hand isPlayer={true} cards={me?.hand}/>
+        <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard}/>
         <PlayerInfo player={me}/>
-        </div>
     </section>
 </div>
 
