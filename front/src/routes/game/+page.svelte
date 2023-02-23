@@ -15,6 +15,8 @@
     const socket = io('http://localhost:9999');
 
     let nPlayer = undefined;
+    let nPlayer2 = undefined;
+    let card = undefined;
 
     let players = [];
     let me = undefined;
@@ -46,6 +48,10 @@
             me.hand = [...me.hand, newCard]
         });
 
+        // socket.on('get_playCard', (data) => {
+        //     console.log(data);
+        // })
+
         socket.on('get_nextPlayer', (nextPlayer) => {
             if(nPlayer === nextPlayer) {
                 blockActions(false)
@@ -67,9 +73,21 @@
     const onDrawCard = () => {
         if(me.hand.length < 7){
             socket.emit('send_pickCard', {nPlayer});
-            console.log(`${nPlayer} picked one card`);
+
+            let listMessage = document.getElementById('listMessage');
+            let message = document.createElement('li');
+            message.textContent = `${nPlayer} picked one card`;
+            listMessage.appendChild(message);
         }
     };
+
+    // const onPlayCard = () => {
+    //     if(me.hand.length < 7){
+    //         socket.emit('send_playCard', {nPlayer, nPlayer2, card});
+    //         console.log(`${nPlayer} uses ${card} against ${nPlayer2}`)
+    //     }
+    // };
+
 </script>
 
 <svelte:head>
@@ -93,24 +111,21 @@
         <PlayerBoard />
         <Hand isPlayer={false} cards={playersWithoutMe[1]?.hand}/>
         <PlayerInfo player={playersWithoutMe[1]} position={"left"}/>
-        
-
     </section>
     <section class="deck-area">
-        <Deck drawCard= {onDrawCard} />
+        <Deck drawCard={onDrawCard} />
     </section>
     <section class="right-player">
         <PlayerBoard />
-            <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand}/>
+            <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand} />
             <PlayerInfo player={playersWithoutMe[2]} position={"right"}/>
- 
 
     </section>
     <section></section>
     <section class="active-player">
         <PlayerBoard />
         <div class="playerInfo">
-        <Hand isPlayer={true} cards={me?.hand} />
+        <Hand isPlayer={true} cards={me?.hand}/>
         <PlayerInfo player={me}/>
         </div>
     </section>
