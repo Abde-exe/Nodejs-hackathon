@@ -39,7 +39,10 @@
 		</div>
 </section>
 
-<script src="main.js"></script>
+<script src="main.js">
+                        setTimeout("location.href = '/game';", 2500);
+
+</script>
 
 <style>
 

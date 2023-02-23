@@ -16,8 +16,6 @@ fetch('https://hp-api-iim.azurewebsites.net/users')
     // Ajout d'un événement de clic au bouton
     const button = document.querySelector('.play');
     button.addEventListener('click', event => {
-    //   // Empêcher le comportement par défaut du formulaire
-    //   event.preventDefault();
 
       // Envoi des valeurs name et password à l'API d'authentification
       const name = nameInput.value;
