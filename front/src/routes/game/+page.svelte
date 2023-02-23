@@ -80,14 +80,6 @@
             listMessage.appendChild(message);
         }
     };
-
-    // const onPlayCard = () => {
-    //     if(me.hand.length < 7){
-    //         socket.emit('send_playCard', {nPlayer, nPlayer2, card});
-    //         console.log(`${nPlayer} uses ${card} against ${nPlayer2}`)
-    //     }
-    // };
-
 </script>
 
 <svelte:head>
@@ -187,7 +179,7 @@
     .playerInfo{
       display: flex;
 
-        
+
     }
     #pItop{
 
