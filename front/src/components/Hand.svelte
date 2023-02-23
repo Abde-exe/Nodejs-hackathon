@@ -13,10 +13,9 @@
             {#if isPlayer === true}
                 <li class="card">
                     <div class="card__img">
-                        <img src="{img}" alt="image of {card.name}">
+                        <img src={card.img} alt="image of {card.name}">
                     </div>
-                    <h2 class="card__title">{card.name}</h2>
-                    <p class="card__description">{card.description}</p>
+                    <!-- <h2 class="card__title">{card.name}</h2> -->
                 </li>
             {:else}
                 <li class="card--bg">
@@ -36,15 +35,14 @@
     }
     .card{
         width: 88px;
-        padding: 8px;
+        padding: 2px;
         border-radius: 8px;
-        background-color: rgb(231, 217, 22);
-        border: solid 1px black;
+        background-color:#C3B189;
         cursor: pointer;
         transition: all 0.3s;
     }
     .card:hover {
-        transform: translateY(-85px) scale(1.5);
+        transform: translateY(-85px) scale(2);
         transition: all 0.3s;
     }
     .card--bg {
