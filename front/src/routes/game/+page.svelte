@@ -5,6 +5,7 @@
     import Hand from "../../components/Hand.svelte";
     import PlayerBoard from "../../components/PlayerBoard.svelte";
     import Deck from "../../components/Deck.svelte";
+    import Chat from "../../components/Chat.svelte";
 
     import {blockActions} from "../../utils/blockActions.js";
 
@@ -87,7 +88,9 @@
         </div>
         <PlayerBoard />
     </section>
-    <section></section>
+    <section>
+        <Chat />
+    </section>
     <section class="left-player">
         <PlayerBoard />
         <div >
