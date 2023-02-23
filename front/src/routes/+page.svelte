@@ -1,6 +1,44 @@
 <script>
 	import profil_picture from '$lib/images/profilpicture.png'
 	import logo from '$lib/images/logo.png'
+
+// Récupération des utilisateurs depuis l'API
+fetch('https://hp-api-iim.azurewebsites.net/users')
+  .then(response => response.json())
+  .then(users => {
+    // Utilisation des informations des utilisateurs ici
+    // console.log(users);
+
+    // Récupération des éléments HTML
+    const nameInput = document.querySelector('input[name="name"]');
+    const passwordInput = document.querySelector('input[name="password"]');
+
+    // Ajout d'un événement de clic au bouton
+    const button = document.querySelector('.play');
+    button.addEventListener('click', event => {
+      // Empêcher le comportement par défaut du formulaire
+      event.preventDefault();
+
+      // Envoi des valeurs name et password à l'API d'authentification
+      const name = nameInput.value;
+      const password = passwordInput.value;
+
+      fetch('https://hp-api-iim.azurewebsites.net/auth/log-in', {
+        method: 'POST',
+        body: JSON.stringify({ name: name, password: password }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Utilisation de la réponse de l'API d'authentification ici
+          console.log(data);
+        })
+        .catch(error => console.error(error));
+    });
+  })
+  .catch(error => console.error(error));
+
+
 </script>
 
 <svelte:head>
