@@ -81,7 +81,6 @@ io.on("connection", (socket) => {
     }
 
     socket.on("send_pickCard", ({nPlayer}) => {
-        console.log(nPlayer)
         const newCard = jsonGame.drawOneCard(nPlayer - 1);
 
         // Check if deck is empty
@@ -96,7 +95,6 @@ io.on("connection", (socket) => {
 
     socket.on("send_playCard", ({nPlayer,nPlayer2,card}) => {
         const cardWithMethod = jsonGame.players[nPlayer - 1].hand.find(cardInHand => cardInHand.id === card.id);
-        console.log(nPlayer2,jsonGame.players[nPlayer2 - 1])
         jsonGame.players[nPlayer - 1].playCard(cardWithMethod,jsonGame.players[nPlayer2 - 1])
 
         if (cardWithMethod.type === "Distance") {
