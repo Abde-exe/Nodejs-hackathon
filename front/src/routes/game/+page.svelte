@@ -15,8 +15,6 @@
     const socket = io('http://localhost:9999');
 
     let nPlayer = undefined;
-    let nPlayer2 = undefined;
-    let card = undefined;
 
     let players = [];
     let me = undefined;
@@ -48,10 +46,6 @@
             me.hand = [...me.hand, newCard]
         });
 
-        // socket.on('get_playCard', (data) => {
-        //     console.log(data);
-        // })
-
         socket.on('get_nextPlayer', (nextPlayer) => {
             if(nPlayer === nextPlayer) {
                 blockActions(false)
@@ -63,6 +57,16 @@
 
         socket.on('disconnect', () => {
             console.log('disconnected');
+        });
+        socket.on('get_playCard', ({nPlayer, card}) => {
+            console.log(`${nPlayer} get ${card.name}`);
+            if(card.type == "Spéciale") nPlayer.specialCards.push(card)
+             else if (card.type == "Bonus" || card.type == "Malus"){
+                 nPlayer.state = card
+            }
+            else if(card.type == "Distance"){
+                nPlayer.distanceCard = card
+            }
         });
     });
 
@@ -100,7 +104,7 @@
         <Chat />
     </section>
     <section class="left-player">
-        <PlayerBoard />
+        <PlayerBoard specialCard={playersWithoutMe[1]?.specialCards} stateCard={playersWithoutMe[1]?.state} milesCard={playersWithoutMe[1]?.distanceCard}/>
         <Hand isPlayer={false} cards={playersWithoutMe[1]?.hand}/>
         <PlayerInfo player={playersWithoutMe[1]} position={"left"}/>
     </section>
@@ -108,14 +112,13 @@
         <Deck drawCard={onDrawCard} />
     </section>
     <section class="right-player">
-        <PlayerBoard />
-            <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand} />
-            <PlayerInfo player={playersWithoutMe[2]} position={"right"}/>
-
+        <PlayerBoard specialCard={playersWithoutMe[2]?.specialCards}  stateCard={playersWithoutMe[2]?.state} milesCard={playersWithoutMe[2]?.distanceCard}/>
+        <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand}/>
+        <PlayerInfo player={playersWithoutMe[2]} position={"right"}/>
     </section>
     <section></section>
     <section class="active-player">
-        <PlayerBoard />
+        <PlayerBoard specialCard={me?.specialCards} stateCard={me?.state} milesCard={me?.distanceCard}/>
         <div class="playerInfo">
         <Hand isPlayer={true} cards={me?.hand}/>
         <PlayerInfo player={me}/>
