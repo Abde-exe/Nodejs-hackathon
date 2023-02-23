@@ -5,32 +5,6 @@
 
 <section>
 		<div class="box">
-            <!-- <h1>Bonjour </h1>
-            <h2>Servers</h2>
-            <div class="servers">
-                <a class="roomlink" href="/matches/start">
-                    <div class="room" value=Room_1>
-                        <p class="roomname">Room 1</p>
-                        <p class="people">2/4</p>
-                        <p class="waiting">waiting</p>
-                    </div>
-                </a>
-
-                <a class="roomlink" href="/matches/start">
-                    <div class="room" value="Room_2">
-                        <p class="roomname" >Room 2</p>
-                        <p class="people">3/4</p>
-                        <p class="waiting">waiting</p>
-                    </div>
-                </a>
-                <a class="roomlink" href="/matches/start">
-                    <div class="room" value="Room_2">
-                        <p class="roomname">Room 3</p>
-                        <p class="people">4/4</p>
-                        <p class="full">full</p>
-                </div>
-                </a>
-            </div> -->
             <div class="room">
                 <p>Room_1</p>
                 <p>En attente de joueurs</p>
@@ -39,10 +13,10 @@
 		</div>
 </section>
 
-<script src="main.js">
+<!-- <script src="main.js">
                         setTimeout("location.href = '/game';", 2500);
 
-</script>
+</script> -->
 
 <style>
 

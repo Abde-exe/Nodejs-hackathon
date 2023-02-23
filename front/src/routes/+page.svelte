@@ -1,7 +1,7 @@
 <script>
 	import profil_picture from '$lib/images/profilpicture.png'
 	import logo from '$lib/images/logo.png'
-
+	
 // Récupération des utilisateurs depuis l'API
 fetch('https://hp-api-iim.azurewebsites.net/users')
   .then(response => response.json())
@@ -61,6 +61,8 @@ fetch('https://hp-api-iim.azurewebsites.net/users')
 				<br>
 				<button class="play">Jouer</button>
 			</form>
+			<a href="/"><button class="historique">Historique des parties</button></a>
+
 		</div>
 </section>
 
@@ -131,9 +133,23 @@ fetch('https://hp-api-iim.azurewebsites.net/users')
 		border-radius: 10px;
         width: 100%;
 	}
+
     .play:hover{
         cursor: pointer;
         background: #ffc107;
     }
+
+	.historique{
+        cursor: pointer;
+		border: none;
+		outline: none;
+		height: 40px;
+		background: #ffc107;
+		color: #fff;
+		font-size: 18px;
+		border-radius: 10px;
+        width: 100%;
+		margin-top: 10px;
+	}
 	
 </style>
