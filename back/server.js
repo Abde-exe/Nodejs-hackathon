@@ -108,19 +108,11 @@ io.on("connection", (socket) => {
             })
         }
 
-        if(nPlayer2 === nPlayer){
-            sendAllExceptSender("get_playCard", {
-                action: "playCard",
-                nPlayer: nPlayer2,
-                card: card,
-            });
-        } else{
-            sendAll("get_distance", {
-                action: "playCard",
-                nPlayer: nPlayer2,
-                card: card,
-            })
-        }
+        sendAll("get_playCard", {
+            action: "playCard",
+            nPlayer: nPlayer2,
+            card: card,
+        })
 
         sendAll("get_nextPlayer", jsonGame.passPlayer() + 1);
     });
@@ -134,6 +126,8 @@ io.on("connection", (socket) => {
         nPlayer: nPlayer,
         card: card
       });
+
+      sendAll("get_nextPlayer", jsonGame.passPlayer() + 1);
     });
 });
 

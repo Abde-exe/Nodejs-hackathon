@@ -5,6 +5,7 @@
     import Hand from "../../components/Hand.svelte";
     import PlayerBoard from "../../components/PlayerBoard.svelte";
     import Deck from "../../components/Deck.svelte";
+    import {blockActions} from "../../utils/blockActions.js";
 
     const socket = io('http://localhost:9999');
 
@@ -23,7 +24,7 @@
     onMount(() => {
         socket.on('connect', () => {
             socket.emit('join_room', 'room1', nPlayer, (player) => {
-                console.log(player);
+                console.log("Player ",player);
                 nPlayer = player;
             });
         });
@@ -37,8 +38,16 @@
         });
 
         socket.on('get_newCard', (newCard) => {
-            console.log(newCard);
             me.hand = [...me.hand, newCard]
+        });
+
+        socket.on('get_nextPlayer', (nextPlayer) => {
+            if(nPlayer === nextPlayer) {
+                blockActions(false)
+            } else {
+                blockActions(true)
+            }
+            console.log(`${nPlayer} is next player`);
         });
 
         socket.on('disconnect', () => {
@@ -50,13 +59,12 @@
         socket.disconnect();
     });
 
-    $: console.log("me",me)
-
     const onDrawCard = () => {
-        socket.emit('send_pickCard', {nPlayer});
-        console.log(`${nPlayer} picked one card`);
+        if(me.hand.length < 7){
+            socket.emit('send_pickCard', {nPlayer});
+            console.log(`${nPlayer} picked one card`);
+        }
     };
-    //todo ajouter la carte a la hand du joueur
 </script>
 
 <svelte:head>
