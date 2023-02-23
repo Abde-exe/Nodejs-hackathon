@@ -81,19 +81,15 @@
         <Board />
     </section>
     <section class="top-player">
-        <div>
         <Hand isPlayer={false} cards={playersWithoutMe[0]?.hand} />
         <PlayerInfo player={playersWithoutMe[0]} position={"top"}/>
-        </div>
         <PlayerBoard />
     </section>
     <section></section>
     <section class="left-player">
         <PlayerBoard />
-        <div >
         <Hand isPlayer={false} cards={playersWithoutMe[1]?.hand}/>
         <PlayerInfo player={playersWithoutMe[1]} position={"left"}/>
-        </div>
         
 
     </section>
@@ -102,10 +98,9 @@
     </section>
     <section class="right-player">
         <PlayerBoard />
-        <div >
             <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand}/>
             <PlayerInfo player={playersWithoutMe[2]} position={"right"}/>
-        </div>
+ 
 
     </section>
     <section></section>
@@ -173,7 +168,7 @@
     }
     .playerInfo{
       display: flex;
-      
+
         
     }
     #pItop{
