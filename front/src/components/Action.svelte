@@ -14,6 +14,11 @@
     $: canAddCardToPlayer3 = canPutCard(players[1], card);
     $: canAddCardToPlayer4 = canPutCard(players[2], card);
 
+    const playCardAndClose = (player, card) => {
+        playCard(player, card);
+        closeAction();
+    }
+
 </script>
 
 {#if card}
@@ -21,10 +26,10 @@
     <div class="action__menu">
         <img src={card.img} alt="image of {card.name}">
         <div class="action__buttons">
-            {#if canAddCardToMe}<button on:click={playCard(me,card)}>Joueur la carte sur moi</button>{/if}
-            {#if canAddCardToPlayer2}<button on:click={playCard(players[0],card)}>Jouer la carte sur le {players[0].pseudo}</button>{/if}
-            {#if canAddCardToPlayer3}<button on:click={playCard(players[1],card)}>Jouer la carte sur le {players[1].pseudo}</button>{/if}
-            {#if canAddCardToPlayer4}<button on:click={playCard(players[2],card)}>Jouer la carte sur le {players[2].pseudo}</button>{/if}
+            {#if canAddCardToMe}<button on:click={()=>playCardAndClose(me,card)}>Joueur la carte sur moi</button>{/if}
+            {#if canAddCardToPlayer2}<button on:click={()=>playCardAndClose(players[0],card)}>Jouer la carte sur le {players[0].pseudo}</button>{/if}
+            {#if canAddCardToPlayer3}<button on:click={()=>playCardAndClose(players[1],card)}>Jouer la carte sur le {players[1].pseudo}</button>{/if}
+            {#if canAddCardToPlayer4}<button on:click={()=>playCardAndClose(players[2],card)}>Jouer la carte sur le {players[2].pseudo}</button>{/if}
             <button on:click={closeAction}>Fermer</button>
         </div>
     </div>

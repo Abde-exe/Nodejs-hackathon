@@ -72,11 +72,8 @@ export function canPutCard(player, card) {
                     }
                     return false
                     break;
-                case "":
-                    return true
-                    break;
                 default:
-                    return false
+                    return true
                     break;
             }
         }

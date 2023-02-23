@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
      * @param {*} data
      */
     const sendAll = (name, data) => {
-        socket.to(socket.data.room).emit(name, data);
+        io.to(socket.data.room).emit(name, data);
     };
 
     /**
@@ -95,9 +95,11 @@ io.on("connection", (socket) => {
     });
 
     socket.on("send_playCard", ({nPlayer,nPlayer2,card}) => {
-        jsonGame.players[nPlayer - 1].playCard(card,nPlayer2 - 1)
+        const cardWithMethod = jsonGame.players[nPlayer - 1].hand.find(cardInHand => cardInHand.id === card.id);
+        console.log(nPlayer2,jsonGame.players[nPlayer2 - 1])
+        jsonGame.players[nPlayer - 1].playCard(cardWithMethod,jsonGame.players[nPlayer2 - 1])
 
-        if (card.type === "distance") {
+        if (cardWithMethod.type === "Distance") {
           if (isGameFinished()){
             sendAll("get_finished", jsonGame)
           }
@@ -111,7 +113,7 @@ io.on("connection", (socket) => {
         sendAll("get_playCard", {
             action: "playCard",
             nPlayer: nPlayer2,
-            card: card,
+            card: cardWithMethod,
         })
 
         sendAll("get_nextPlayer", jsonGame.passPlayer() + 1);

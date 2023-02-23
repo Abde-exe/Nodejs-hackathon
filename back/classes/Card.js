@@ -26,9 +26,9 @@ export class DistanceCard extends Card {
   }
 
   toProgress(player) {
-    //console.log('player2', player);
-    //console.log('this.distance', this.distance);
+    console.log(player)
     player.progress += this.distance;
+    player.distanceCard = this;
   }
 }
 
@@ -45,7 +45,7 @@ export class BonusCard extends Card {
     super(id, name, description, type, number, img);
   }
   toSetBonus(player) {
-    player.state = this.name;
+    player.state = this;
   }
 }
 
@@ -54,7 +54,7 @@ export class MalusCard extends Card {
     super(id, name, description, type, number, img);
   }
   toSetMalus(player) {
-    player.state = this.name;
+    player.state = this;
   }
 }
 export class CharacterCard extends Card {

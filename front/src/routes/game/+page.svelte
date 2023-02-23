@@ -56,18 +56,24 @@
             console.log(`${nPlayer} is next player`);
         });
 
+        socket.on('get_playCard', ({action,nPlayer, card}) => {
+            console.log(`${nPlayer} get ${card.name}`);
+
+            let newPlayers = [...players]
+
+            if(card.type === "Spéciale") newPlayers[nPlayer - 1].specialCards.push(card)
+            else if (card.type === "Bonus" || card.type === "Malus"){
+                newPlayers[nPlayer - 1].state = card
+            }
+            else if(card.type === "Distance"){
+                newPlayers[nPlayer - 1].distanceCard = card
+            }
+
+            players = [...newPlayers]
+        });
+
         socket.on('disconnect', () => {
             console.log('disconnected');
-        });
-        socket.on('get_playCard', ({nPlayer, card}) => {
-            console.log(`${nPlayer} get ${card.name}`);
-            if(card.type == "Spéciale") nPlayer.specialCards.push(card)
-             else if (card.type == "Bonus" || card.type == "Malus"){
-                 nPlayer.state = card
-            }
-            else if(card.type == "Distance"){
-                nPlayer.distanceCard = card
-            }
         });
     });
 
@@ -90,7 +96,13 @@
     };
 
     const playCard = (target,card) => {
-        let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo)
+        let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo) + 1
+
+        const playerMe = players.find((player)=>player.me)
+        const cardIndex = playerMe.hand.findIndex((cardPlayer)=>cardPlayer.id === card.id)
+        playerMe.hand.splice(cardIndex,1)
+        me = {...playerMe}
+
         socket.emit('send_playCard', {
             nPlayer: nPlayer,
             nPlayer2: nPlayer2,
