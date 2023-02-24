@@ -123,8 +123,10 @@
         <Board />
     </section>
     <section class="top-player">
-        <Hand isPlayer={false} cards={playersWithoutMe[0]?.hand} />
-        <PlayerInfo player={playersWithoutMe[0]} position={"top"}/>
+        <div style="display: flex;">
+            <Hand isPlayer={false} cards={playersWithoutMe[0]?.hand} position={"top"}/>
+            <PlayerInfo player={playersWithoutMe[0]} position={"top"}/>
+        </div>
         <PlayerBoard position={"top"} specialCard={playersWithoutMe[0]?.specialCards} stateCard={playersWithoutMe[0]?.state} milesCard={playersWithoutMe[0]?.distanceCard}/>
     </section>
     <section>
@@ -146,8 +148,10 @@
     <section></section>
     <section class="active-player">
         <PlayerBoard specialCard={me?.specialCards} stateCard={me?.state} milesCard={me?.distanceCard}/>
-        <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard}/>
-        <PlayerInfo player={me}/>
+        <div style="display: flex;">
+            <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard}/>
+            <PlayerInfo player={me}/>
+        </div>
     </section>
 </div>
 
@@ -193,7 +197,7 @@
     .layout {
         display: grid;
         grid-template-columns: 1fr 1.5fr 1fr;
-        grid-template-rows: 1fr 300px 1.2fr;
+        grid-template-rows: 1fr 1fr  1.5fr;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
         height: 100vh;

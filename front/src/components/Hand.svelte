@@ -7,6 +7,7 @@
     export let me = undefined
     export let players = undefined
     export let playCard = undefined;
+    export let position = undefined;
 
     let showActionCard = undefined
 
@@ -19,7 +20,7 @@
 
 </script>
 
-<ul class="cards">
+<ul class="cards" id={position}>
     {#if cards && Array.isArray(cards)}
         {#each cards as card}
             <Card card={card} isPlayer={isPlayer} click={() => showAction(card)}/>
@@ -36,5 +37,10 @@
         display: flex;
         position: relative;
         justify-content: center;
+        /* height: 0%; */
+    }
+    #top{
+        max-width: 30vw; 
+
     }
 </style>
