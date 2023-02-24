@@ -40,9 +40,9 @@
 
 <style>
     .player-board {
-        border: solid red 1px;
+        border: solid rgb(200, 168, 121) 1px;
         width: 100%;
-        height: 100%;
+        height: 50%;
         display: flex;
         gap: 10px;
         justify-content: space-around;
@@ -54,10 +54,13 @@
         background-color:transparent;
         cursor: pointer;
         transition: all 0.3s;
+        z-index: 1000;
     }
     .card:hover {
         transform: translateY(-85px) scale(3);
         transition: all 0.3s;
+        transform-origin: top ;
+        z-index: 1000;
     }
     #top {
         rotate: 180deg;

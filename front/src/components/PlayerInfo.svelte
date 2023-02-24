@@ -30,21 +30,20 @@
    
     #top {
         rotate: 180deg;
-        position: absolute;
         left: 66%;
         top: 70%;
     }
     #right {
         rotate: 90deg;
         position: absolute;
-        bottom: 14%;
-        left: 71%;
+        bottom: 16%;
+        left: 97%;
     }
     #left{
     rotate: -90deg;
     position: absolute;
-        left: 12%;
-        bottom: 14%;
+    bottom: 16%;
+        left: 97%;
     }
 
     </style>
