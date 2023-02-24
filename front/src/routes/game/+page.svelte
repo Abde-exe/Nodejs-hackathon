@@ -61,12 +61,12 @@
 
             let newPlayers = [...players]
 
-            if(card.type === "Spéciale") newPlayers[nPlayer - 1].specialCards.push(card)
+            if(card.type === "Spéciale") newPlayers[nPlayer].specialCards.push(card)
             else if (card.type === "Bonus" || card.type === "Malus"){
-                newPlayers[nPlayer - 1].state = card
+                newPlayers[nPlayer].state = card
             }
             else if(card.type === "Distance"){
-                newPlayers[nPlayer - 1].distanceCard = card
+                newPlayers[nPlayer].distanceCard = card
             }
 
             players = [...newPlayers]
@@ -96,7 +96,9 @@
     };
 
     const playCard = (target,card) => {
-        let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo) + 1
+        let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo)
+        console.log(players)
+        console.log(nPlayer2)
 
         const playerMe = players.find((player)=>player.me)
         const cardIndex = playerMe.hand.findIndex((cardPlayer)=>cardPlayer.id === card.id)
@@ -201,18 +203,5 @@
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-    .playerInfo{
-      display: flex;
-
-
-    }
-    #pItop{
-
-    }
-
-    .playerInfoRight{
-        display: flex;
-        flex-direction: row;
     }
 </style>

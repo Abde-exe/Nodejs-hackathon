@@ -1,7 +1,7 @@
 <script>
-    export let specialCard;
-    export let milesCard;
-    export let stateCard;
+    export let specialCard = undefined;
+    export let milesCard = undefined
+    export let stateCard = undefined;
 </script>
 
 <div class="player-board">

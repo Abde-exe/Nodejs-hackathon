@@ -19,7 +19,7 @@ io.on("connection", (socket) => {
         socket.join(room);
         socket.data.room = room;
 
-        callback(nPlayer ?? io.sockets.adapter.rooms.get(room).size);
+        callback(nPlayer ?? io.sockets.adapter.rooms.get(room).size - 1);
 
         if(io.sockets.adapter.rooms.get(room).size === 1 && !nPlayer) {
             jsonGame = createGame();
@@ -76,12 +76,12 @@ io.on("connection", (socket) => {
      * @param {*} data
      */
     const sendTo = (name, nPlayer, data) => {
-        const socketId = Array.from(io.sockets.adapter.rooms.get(socket.data.room))[nPlayer - 1];
+        const socketId = Array.from(io.sockets.adapter.rooms.get(socket.data.room))[nPlayer];
         io.to(socketId).emit(name, data);
     }
 
     socket.on("send_pickCard", ({nPlayer}) => {
-        const newCard = jsonGame.drawOneCard(nPlayer - 1);
+        const newCard = jsonGame.drawOneCard(nPlayer);
 
         // Check if deck is empty
         jsonGame.defausseToDeck();
@@ -94,8 +94,8 @@ io.on("connection", (socket) => {
     });
 
     socket.on("send_playCard", ({nPlayer,nPlayer2,card}) => {
-        const cardWithMethod = jsonGame.players[nPlayer - 1].hand.find(cardInHand => cardInHand.id === card.id);
-        jsonGame.players[nPlayer - 1].playCard(cardWithMethod,jsonGame.players[nPlayer2 - 1])
+        const cardWithMethod = jsonGame.players[nPlayer].hand.find(cardInHand => cardInHand.id === card.id);
+        jsonGame.players[nPlayer].playCard(cardWithMethod,jsonGame.players[nPlayer2])
 
         if (cardWithMethod.type === "Distance") {
           if (isGameFinished()){
@@ -104,7 +104,7 @@ io.on("connection", (socket) => {
             sendAll("get_distance", {
                 action: "distance",
                 nPlayer: nPlayer2,
-                distance: jsonGame.players[nPlayer2 - 1].progress,
+                distance: jsonGame.players[nPlayer2].progress,
             })
         }
 
@@ -119,7 +119,7 @@ io.on("connection", (socket) => {
    
 
     socket.on("send_discardCard", ({nPlayer,card}) => {  
-      jsonGame.players[nPlayer - 1].toDefausse(jsonGame, card)
+      jsonGame.players[nPlayer].toDefausse(jsonGame, card)
 
       sendAllExceptSender("get_discardCard", {
         action: "discard card",

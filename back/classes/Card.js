@@ -26,7 +26,6 @@ export class DistanceCard extends Card {
   }
 
   toProgress(player) {
-    console.log(player)
     player.progress += this.distance;
     player.distanceCard = this;
   }

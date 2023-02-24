@@ -1,7 +1,7 @@
 
 <script>
 	export let player;
-    export let position;
+    export let position = undefined;
 </script>
 
 

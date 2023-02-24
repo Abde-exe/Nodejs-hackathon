@@ -4,9 +4,9 @@
 
     export let isPlayer;
     export let cards;
-    export let me;
-    export let players;
-    export let playCard;
+    export let me = undefined
+    export let players = undefined
+    export let playCard = undefined;
 
     let showActionCard = undefined
 
@@ -25,7 +25,7 @@
             <Card card={card} isPlayer={isPlayer} click={() => showAction(card)}/>
         {/each}
     {/if}
-    {#if showActionCard}
+    {#if showActionCard && me && players && playCard !== undefined}
         <Action card={showActionCard} closeAction={closeAction} me={me} players={players} playCard={playCard} />
     {/if}
 </ul>
