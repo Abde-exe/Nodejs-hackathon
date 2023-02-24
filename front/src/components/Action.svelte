@@ -7,8 +7,6 @@
     export let players
     export let playCard;
 
-    $: console.log(players)
-
     $: canAddCardToMe = canPutCard(me, card);
     $: canAddCardToPlayer2 = canPutCard(players[0], card);
     $: canAddCardToPlayer3 = canPutCard(players[1], card);
