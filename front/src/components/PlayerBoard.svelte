@@ -9,7 +9,7 @@
 <div class="player-board">
     <div id="miles-card-position" class="player-board__miles">
         {#if milesCard}
-        <div class="card">
+        <div class="card" id={position}>
             {#if milesCard?.img}
             <img src={milesCard?.img} alt="image of">
             {/if}
@@ -18,7 +18,7 @@
     </div>
     <div id="special-card-position" class="player-board__special">
         {#if specialCard}
-        <div class="card">
+        <div class="card" id={position}>
             {#if specialCard[0]?.img}
             <img src={specialCard[0]?.img} alt="image of">
             {/if}
