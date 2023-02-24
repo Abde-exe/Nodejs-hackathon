@@ -2,6 +2,8 @@
     export let specialCard = undefined;
     export let milesCard = undefined
     export let stateCard = undefined;
+    export let position = undefined;
+
 </script>
 
 <div class="player-board">
@@ -25,7 +27,7 @@
     </div>
     <div id="bonus-card-position" class="player-board__bonus">
         {#if stateCard}
-        <div class="card">
+        <div class="card" id={position}>
             {#if stateCard?.img}
             <img src={stateCard?.img} alt="image of">
             {/if}
@@ -49,8 +51,21 @@
         width: 50px;
         padding: 2px;
         border-radius: 2px;
-        background-color:#C3B189;
+        background-color:transparent;
         cursor: pointer;
         transition: all 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-85px) scale(3);
+        transition: all 0.3s;
+    }
+    #top {
+        rotate: 180deg;
+    }
+    #right {
+        rotate: 90deg;
+    }
+    #left{
+    rotate: -90deg;
     }
 </style>

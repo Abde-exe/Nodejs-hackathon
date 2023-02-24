@@ -125,13 +125,13 @@
     <section class="top-player">
         <Hand isPlayer={false} cards={playersWithoutMe[0]?.hand} />
         <PlayerInfo player={playersWithoutMe[0]} position={"top"}/>
-        <PlayerBoard />
+        <PlayerBoard position={"top"} specialCard={playersWithoutMe[0]?.specialCards} stateCard={playersWithoutMe[0]?.state} milesCard={playersWithoutMe[0]?.distanceCard}/>
     </section>
     <section>
         <Chat />
     </section>
     <section class="left-player">
-        <PlayerBoard specialCard={playersWithoutMe[1]?.specialCards} stateCard={playersWithoutMe[1]?.state} milesCard={playersWithoutMe[1]?.distanceCard}/>
+        <PlayerBoard position={"left"} specialCard={playersWithoutMe[1]?.specialCards} stateCard={playersWithoutMe[1]?.state} milesCard={playersWithoutMe[1]?.distanceCard}/>
         <Hand isPlayer={false} cards={playersWithoutMe[1]?.hand}/>
         <PlayerInfo player={playersWithoutMe[1]} position={"left"}/>
     </section>
@@ -139,7 +139,7 @@
         <Deck drawCard={onDrawCard} />
     </section>
     <section class="right-player">
-        <PlayerBoard specialCard={playersWithoutMe[2]?.specialCards}  stateCard={playersWithoutMe[2]?.state} milesCard={playersWithoutMe[2]?.distanceCard}/>
+        <PlayerBoard position={"right"} specialCard={playersWithoutMe[2]?.specialCards}  stateCard={playersWithoutMe[2]?.state} milesCard={playersWithoutMe[2]?.distanceCard}/>
         <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand}/>
         <PlayerInfo player={playersWithoutMe[2]} position={"right"}/>
     </section>

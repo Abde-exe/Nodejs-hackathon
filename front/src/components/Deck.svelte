@@ -10,6 +10,7 @@
 <style>
 	.deck {
 		width: 96px;
+        cursor: pointer;
 	}
 	.deck img {
 		border-radius: 8px;
