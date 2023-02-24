@@ -26,7 +26,7 @@ io.on("connection", (socket) => {
         }
 
         const socketsInRoom = io.sockets.adapter.rooms.get(room);
-        if(socketsInRoom.size === 1) {
+        if(socketsInRoom.size === 4) {
             Array.from(socketsInRoom).forEach((socketId) => {
                 const socketIndex = Array.from(socketsInRoom).indexOf(socketId);
                 //Send player info to each player
@@ -97,6 +97,7 @@ io.on("connection", (socket) => {
         const cardWithMethod = jsonGame.players[nPlayer].hand.find(cardInHand => cardInHand.id === card.id);
         jsonGame.players[nPlayer].playCard(cardWithMethod,jsonGame.players[nPlayer2])
 
+        console.log(cardWithMethod.type)
         if (cardWithMethod.type === "Distance") {
           if (isGameFinished()){
             sendAll("get_finished", jsonGame)
@@ -114,7 +115,7 @@ io.on("connection", (socket) => {
             card: cardWithMethod,
         })
 
-        sendAll("get_nextPlayer", jsonGame.passPlayer() + 1);
+        sendAll("get_nextPlayer", jsonGame.passPlayer());
     });
    
 
@@ -127,7 +128,7 @@ io.on("connection", (socket) => {
         card: card
       });
 
-      sendAll("get_nextPlayer", jsonGame.passPlayer() + 1);
+      sendAll("get_nextPlayer", jsonGame.passPlayer());
     });
 });
 

@@ -1,38 +1,31 @@
 export function canPutCard(player, card) {
     if (player.me) {
-        if (card.type === "Distance" || card.type === "Spéciale" || card.type === "Personnage") {
+        if (card.type === "Spéciale" || card.type === "Personnage") {
+            return true
+        } else if(card.type === "Distance") {
+            if(player.state.type === "Malus"){
+                if(player.state?.name === "Impedimenta"){
+                    return card.distance <= 50
+                }
+                return false
+            }
             return true
         } else if (card.type === "Bonus") {
-            switch (player.state) {
+            switch (player.state?.name) {
                 case "Cognard":
-                    if (card.name === "Vulnera Sanentur") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Vulnera Sanentur";
                     break;
                 case "Expeliarmus":
-                    if (card.name === "Protego") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Protego";
                     break;
                 case "Diffinito":
-                    if (card.name === "Reparo") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Reparo";
                     break;
                 case "Imobilis":
-                    if (card.name === "Finite Incantatem") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Finite Incantatem";
                     break;
                 case "Impedimenta":
-                    if (card.name === "Mobilicorpus") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Mobilicorpus";
                     break;
                 default:
                     return false
@@ -41,36 +34,21 @@ export function canPutCard(player, card) {
         }
     } else {
         if (card.type === "Malus") {
-            switch (player.state) {
+            switch (player.state?.name) {
                 case "Vulnera Sanentur":
-                    if (card.name === "Cognard") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Cognard";
                     break;
                 case "Protego":
-                    if (card.name === "Expeliarmus") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Expeliarmus";
                     break;
                 case "Reparo":
-                    if (card.name === "Diffinito") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Diffinito";
                     break;
                 case "Finite Incantatem":
-                    if (card.name === "Imobilis") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Imobilis";
                     break;
                 case "Mobilicorpus":
-                    if (card.name === "Impedimenta") {
-                        return true
-                    }
-                    return false
+                    return card.name === "Impedimenta";
                     break;
                 default:
                     return true

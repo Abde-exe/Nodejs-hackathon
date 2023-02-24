@@ -46,12 +46,12 @@ export class Player {
 
   removeCardFromHand = (cardId) => {
     //retire la carte de la main
-    this.hand = this.hand.filter((handCard) => (handCard.id = cardId));
+    this.hand = this.hand.filter((handCard) => (handCard.id !== cardId));
   };
 
   toDefausse = (game, card) => {
     //recupere la carte dans la main
-    const cardDefaussed = this.hand.find((handCard) => handCard.id == card.id);
+    const cardDefaussed = this.hand.find((handCard) => handCard.id === card.id);
     this.removeCardFromHand(card.id);
     //ajoute la carte a la defausse
     game.defausse.push(cardDefaussed);

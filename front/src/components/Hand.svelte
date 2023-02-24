@@ -15,7 +15,9 @@
         showActionCard = undefined
     }
     const showAction = (card) =>{
-        showActionCard = card
+        if(cards.length === 7){
+            showActionCard = card
+        }
     }
 
 </script>

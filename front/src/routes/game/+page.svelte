@@ -32,6 +32,8 @@
             socket.emit('join_room', 'room1', nPlayer, (player) => {
                 console.log("Player ",player);
                 nPlayer = player;
+
+                if(player !== 0) blockActions(true)
             });
         });
 
@@ -72,6 +74,14 @@
             players = [...newPlayers]
         });
 
+        socket.on('get_distance', ({nPlayer,distance}) => {
+            const newPlayers = [...players]
+            newPlayers[nPlayer].progress = distance
+            players = [...newPlayers]
+
+            console.log(`Distance : ${distance} km`);
+        });
+
         socket.on('disconnect', () => {
             console.log('disconnected');
         });
@@ -82,6 +92,8 @@
         socket.off('get_pickCard');
         socket.off('get_newCard');
         socket.off('get_nextPlayer');
+        socket.off('get_playCard');
+        socket.off('disconnect');
     });
 
     const onDrawCard = () => {
@@ -97,13 +109,11 @@
 
     const playCard = (target,card) => {
         let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo)
-        console.log(players)
-        console.log(nPlayer2)
-
         const playerMe = players.find((player)=>player.me)
         const cardIndex = playerMe.hand.findIndex((cardPlayer)=>cardPlayer.id === card.id)
         playerMe.hand.splice(cardIndex,1)
         me = {...playerMe}
+
 
         socket.emit('send_playCard', {
             nPlayer: nPlayer,
