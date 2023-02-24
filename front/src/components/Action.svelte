@@ -6,6 +6,7 @@
     export let me;
     export let players
     export let playCard;
+    export let discardCard;
 
     $: console.log(players)
 
@@ -16,6 +17,10 @@
 
     const playCardAndClose = (player, card) => {
         playCard(player, card);
+        closeAction();
+    }
+    const discardAndClose = (card) => {
+        discardCard(card);
         closeAction();
     }
 
@@ -30,6 +35,7 @@
             {#if canAddCardToPlayer2}<button on:click={()=>playCardAndClose(players[0],card)}>Jouer la carte sur le {players[0].pseudo}</button>{/if}
             {#if canAddCardToPlayer3}<button on:click={()=>playCardAndClose(players[1],card)}>Jouer la carte sur le {players[1].pseudo}</button>{/if}
             {#if canAddCardToPlayer4}<button on:click={()=>playCardAndClose(players[2],card)}>Jouer la carte sur le {players[2].pseudo}</button>{/if}
+            <button on:click={()=>discardAndClose(card)}>Se débarasser de la carte (défausser)</button>
             <button on:click={closeAction}>Fermer</button>
         </div>
     </div>

@@ -11,6 +11,7 @@
     import {canPutCard} from "../../utils/canPutCard.js";
 
 	import PlayerInfo from '../../components/PlayerInfo.svelte';
+	import Defausse from '../../components/Defausse.svelte';
 
 
     const socket = io('http://localhost:9999');
@@ -20,6 +21,8 @@
     let players = [];
     let me = undefined;
     let playersWithoutMe = [];
+    let defausse = [];
+
     $: {
         if (players.length > 0) {
             me = players.find((player)=>player.me)
@@ -71,6 +74,10 @@
 
             players = [...newPlayers]
         });
+        socket.on('get_discardCard', ({action, nPlayer, card}) => {
+            console.log(card);
+            defausse.push(card)
+        });
 
         socket.on('disconnect', () => {
             console.log('disconnected');
@@ -111,6 +118,18 @@
             card: card
         });
     }
+    const discardCard = (card) => {
+        let nPlayerIndex = players.findIndex((player) => player.pseudo === me.pseudo)
+        const playerMe = {...me}
+        const cardIndex = playerMe.hand.findIndex((cardPlayer)=>cardPlayer.id === card.id)
+        playerMe.hand.splice(cardIndex,1)
+        me = {...playerMe}
+
+        socket.emit('send_discardCard', {
+            nPlayer: nPlayerIndex,
+            card: card
+        });
+    }
 </script>
 
 <svelte:head>
@@ -139,6 +158,7 @@
     </section>
     <section class="deck-area">
         <Deck drawCard={onDrawCard} />
+        <Defausse defausse={defausse}/>
     </section>
     <section class="right-player">
         <PlayerBoard position={"right"} specialCard={playersWithoutMe[2]?.specialCards}  stateCard={playersWithoutMe[2]?.state} milesCard={playersWithoutMe[2]?.distanceCard}/>
@@ -149,7 +169,7 @@
     <section class="active-player">
         <PlayerBoard specialCard={me?.specialCards} stateCard={me?.state} milesCard={me?.distanceCard}/>
         <div style="display: flex;">
-            <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard}/>
+            <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard} discardCard={discardCard}/>
             <PlayerInfo player={me}/>
         </div>
     </section>

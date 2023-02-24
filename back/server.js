@@ -118,10 +118,9 @@ io.on("connection", (socket) => {
     });
    
 
-    socket.on("send_discardCard", ({nPlayer,card}) => {  
-      jsonGame.players[nPlayer].toDefausse(jsonGame, card)
-
-      sendAllExceptSender("get_discardCard", {
+    socket.on("send_discardCard", ({nPlayer,card}) => { 
+         jsonGame.players[nPlayer].toDefausse(jsonGame, card)
+      sendAll("get_discardCard", {
         action: "discard card",
         nPlayer: nPlayer,
         card: card

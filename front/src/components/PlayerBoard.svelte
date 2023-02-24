@@ -48,7 +48,7 @@
         justify-content: space-around;
     }
     .card{
-        width: 50px;
+       height: 10vh;
         padding: 2px;
         border-radius: 2px;
         background-color:transparent;
@@ -57,18 +57,25 @@
         z-index: 1000;
     }
     .card:hover {
-        transform: translateY(-85px) scale(3);
+        transform: translateY(-85px) scale(2.5);
         transition: all 0.3s;
         transform-origin: top ;
         z-index: 1000;
     }
     #top {
         rotate: 180deg;
+        width: 50px;
+
     }
     #right {
         rotate: 90deg;
+        width: 50px;
+
     }
     #left{
     rotate: -90deg;
+    width: 50px;
+
     }
+    
 </style>
