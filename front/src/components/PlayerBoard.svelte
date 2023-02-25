@@ -64,17 +64,14 @@
     }
     #top {
         rotate: 180deg;
-        width: 50px;
 
     }
     #right {
         rotate: 90deg;
-        width: 50px;
 
     }
     #left{
     rotate: -90deg;
-    width: 50px;
 
     }
     
