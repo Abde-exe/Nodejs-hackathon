@@ -142,10 +142,8 @@
         <Board />
     </section>
     <section class="top-player">
-        <div style="display: flex;">
             <Hand isPlayer={false} cards={playersWithoutMe[0]?.hand} position={"top"}/>
             <PlayerInfo player={playersWithoutMe[0]} position={"top"}/>
-        </div>
         <PlayerBoard position={"top"} specialCard={playersWithoutMe[0]?.specialCards} stateCard={playersWithoutMe[0]?.state} milesCard={playersWithoutMe[0]?.distanceCard}/>
     </section>
     <section>
@@ -168,10 +166,8 @@
     <section></section>
     <section class="active-player">
         <PlayerBoard specialCard={me?.specialCards} stateCard={me?.state} milesCard={me?.distanceCard}/>
-        <div style="display: flex;">
             <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard} discardCard={discardCard}/>
             <PlayerInfo player={me}/>
-        </div>
     </section>
 </div>
 

@@ -21,10 +21,15 @@
         height: 50px;
         margin-left: 10px;
         background-color: #cea06a;
+        border: 1px white solid;
         padding: 8px;
         border-radius: 10px;
         display: flex;
         flex-direction: row;
+        position: absolute;
+        right: -30%;
+        bottom: 20%;
+
     }
     .playerImg{
         height: 50px;
@@ -40,8 +45,8 @@
 
     #top {
         rotate: 180deg;
-        left: 66%;
-        top: 70%;
+        right: -30%;
+        bottom: 20%;
     }
     #right {
         rotate: 90deg;
@@ -53,7 +58,7 @@
     rotate: -90deg;
     position: absolute;
     bottom: 16%;
-        left: 90%;
+    left: 90%;
     }
 
     </style>
