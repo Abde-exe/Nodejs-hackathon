@@ -1,5 +1,5 @@
-import { createServer } from "http";
-import { Server } from "socket.io";
+import {createServer} from "http";
+import {Server} from "socket.io";
 import {createGame} from "./utils/createGame.js";
 import {Card} from "./classes/Card.js";
 
@@ -21,12 +21,12 @@ io.on("connection", (socket) => {
 
         callback(nPlayer ?? io.sockets.adapter.rooms.get(room).size - 1);
 
-        if(io.sockets.adapter.rooms.get(room).size === 1 && !nPlayer) {
+        if (io.sockets.adapter.rooms.get(room).size === 1 && !nPlayer) {
             jsonGame = createGame();
         }
 
         const socketsInRoom = io.sockets.adapter.rooms.get(room);
-        if(socketsInRoom.size === 4) {
+        if (socketsInRoom.size === 4) {
             Array.from(socketsInRoom).forEach((socketId) => {
                 const socketIndex = Array.from(socketsInRoom).indexOf(socketId);
                 //Send player info to each player
@@ -39,7 +39,7 @@ io.on("connection", (socket) => {
                 }
 
                 newPlayers.map((player, index) => {
-                    if(index !== socketIndex) {
+                    if (index !== socketIndex) {
                         player.hand = [...fakeCard];
                     } else {
                         player.me = true;
@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
         const newCard = jsonGame.drawOneCard(nPlayer);
 
         // Check if deck is empty
-        jsonGame.defausseToDeck();
+        jsonGame.discardToDeck();
 
         sendAllExceptSender("get_pickCard", {
             action: "pickCard",
@@ -93,15 +93,15 @@ io.on("connection", (socket) => {
         sendTo("get_newCard", nPlayer, newCard);
     });
 
-    socket.on("send_playCard", ({nPlayer,nPlayer2,card}) => {
+    socket.on("send_playCard", ({nPlayer, nPlayer2, card}) => {
         const cardWithMethod = jsonGame.players[nPlayer].hand.find(cardInHand => cardInHand.id === card.id);
-        jsonGame.players[nPlayer].playCard(cardWithMethod,jsonGame.players[nPlayer2])
+        jsonGame.players[nPlayer].playCard(cardWithMethod, jsonGame.players[nPlayer2])
 
         console.log(cardWithMethod.type)
         if (cardWithMethod.type === "Distance") {
-          if (isGameFinished()){
-            sendAll("get_finished", jsonGame)
-          }
+            if (isGameFinished()) {
+                sendAll("get_finished", jsonGame)
+            }
             sendAll("get_distance", {
                 action: "distance",
                 nPlayer: nPlayer2,
@@ -117,24 +117,24 @@ io.on("connection", (socket) => {
 
         sendAll("get_nextPlayer", jsonGame.passPlayer());
     });
-   
 
-    socket.on("send_discardCard", ({nPlayer,card}) => { 
-         jsonGame.players[nPlayer].toDefausse(jsonGame, card)
-      sendAll("get_discardCard", {
-        action: "discard card",
-        nPlayer: nPlayer,
-        card: card
-      });
 
-      sendAll("get_nextPlayer", jsonGame.passPlayer());
+    socket.on("send_discardCard", ({nPlayer, card}) => {
+        jsonGame.players[nPlayer].toDiscard(jsonGame, card)
+        sendAll("get_discardCard", {
+            action: "discard card",
+            nPlayer: nPlayer,
+            card: card
+        });
+
+        sendAll("get_nextPlayer", jsonGame.passPlayer());
     });
 });
 
 const isGameFinished = () => {
     jsonGame.players.forEach(player => {
         //un joueur a parcouru 4000km
-        if(player.progress === 1000) return true
+        if (player.progress === 1000) return true
 
         //aucun joueur n'a parcouru 4000km
         return false

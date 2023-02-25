@@ -1,6 +1,7 @@
 <script>
     import back_card from "../lib/cards/back_card.jpg";
     import Action from "./Action.svelte";
+
     export let card
     export let isPlayer
     export let click
@@ -22,33 +23,25 @@
 {/if}
 
 <style>
-    .card{
+    .card {
         width: 88px;
         padding: 2px;
         border-radius: 8px;
-        background-color:transparent;
+        background-color: transparent;
         cursor: pointer;
         transition: all 0.3s;
     }
+
     .card:hover {
         transform: translateY(-85px) scale(2);
         transition: all 0.3s;
     }
-    .card__img img{
+
+    .card__img img {
         border-radius: 8px;
     }
-    .card--bg {
-        width: 88px;
-        border-radius: 8px;
-    }
+
     .card__bg:not(:first-child) {
         margin-left: -40px;
-    }
-    .card__title {
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
-    .card__description {
-        font-size: 0.8rem;
     }
 </style>

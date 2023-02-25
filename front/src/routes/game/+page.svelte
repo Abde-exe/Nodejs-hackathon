@@ -1,6 +1,6 @@
 <script>
-    import { io } from 'socket.io-client';
-    import { onDestroy, onMount } from 'svelte';
+    import {io} from 'socket.io-client';
+    import {onDestroy, onMount} from 'svelte';
     import Board from "../../components/Board.svelte";
     import Hand from "../../components/Hand.svelte";
     import PlayerBoard from "../../components/PlayerBoard.svelte";
@@ -10,8 +10,9 @@
     import {blockActions} from "../../utils/blockActions.js";
     import {canPutCard} from "../../utils/canPutCard.js";
 
-	import PlayerInfo from '../../components/PlayerInfo.svelte';
-	import Defausse from '../../components/Defausse.svelte';
+    import PlayerInfo from '../../components/PlayerInfo.svelte';
+    import Discard from '../../components/Discard.svelte';
+    import Note from "../../components/Note.svelte";
 
 
     const socket = io('http://localhost:9999');
@@ -21,27 +22,39 @@
     let players = [];
     let me = undefined;
     let playersWithoutMe = [];
-    let defausse = [];
+    let discard = [];
+    let currentPlayer = 0;
+    let noteInfo = {
+        text: "",
+        isActionNeeded: false
+    }
 
     $: {
         if (players.length > 0) {
-            me = players.find((player)=>player.me)
-            playersWithoutMe = players.filter((player)=>!player.me)
+            me = players.find((player) => player.me)
+            playersWithoutMe = players.filter((player) => !player.me)
         }
     }
 
     onMount(() => {
         socket.on('connect', () => {
             socket.emit('join_room', 'room1', nPlayer, (player) => {
-                console.log("Player ",player);
+                console.log("Player ", player);
                 nPlayer = player;
 
-                if(player !== 0) blockActions(true)
+                if (player !== 0) blockActions(true)
             });
         });
 
         socket.on('get_playerInfo', (newPlayers) => {
             players = [...newPlayers]
+            noteInfo = nPlayer === 0 ? {
+                text: "C'est votre tour. Piochez une carte.",
+                isActionNeeded: true
+            } : {
+                text: `Tour de ${players[0].pseudo}`,
+                isActionNeeded: false
+            }
         });
 
         socket.on('get_pickCard', ({nPlayer}) => {
@@ -49,42 +62,53 @@
         });
 
         socket.on('get_newCard', (newCard) => {
-            me.hand = [...me.hand, newCard]
+            me.hand.push(newCard)
+            me.hand = me.hand
+
+            noteInfo = {
+                text: `Jouez une carte`,
+                isActionNeeded: true
+            }
         });
 
         socket.on('get_nextPlayer', (nextPlayer) => {
-            if(nPlayer === nextPlayer) {
+            if (nPlayer === nextPlayer) {
                 blockActions(false)
+                noteInfo = {
+                    text: "C'est votre tour. Piochez une carte.",
+                    isActionNeeded: true
+                }
             } else {
                 blockActions(true)
+                noteInfo = {
+                    text: `Tour de ${players[nextPlayer].pseudo}`,
+                    isActionNeeded: false
+                }
             }
+            currentPlayer = nextPlayer
             console.log(`${nPlayer} is next player`);
         });
 
-        socket.on('get_playCard', ({action,nPlayer, card}) => {
+        socket.on('get_playCard', ({nPlayer, card}) => {
             console.log(`${nPlayer} get ${card.name}`);
 
-            let newPlayers = [...players]
-
-            if(card.type === "Spéciale") newPlayers[nPlayer].specialCards.push(card)
-            else if (card.type === "Bonus" || card.type === "Malus"){
-                newPlayers[nPlayer].state = card
-            }
-            else if(card.type === "Distance"){
-                newPlayers[nPlayer].distanceCard = card
+            if (card.type === "Spéciale") players[nPlayer].specialCards.push(card)
+            else if (card.type === "Bonus" || card.type === "Malus") {
+                players[nPlayer].state = card
+            } else if (card.type === "Distance") {
+                players[nPlayer].distanceCard = card
             }
 
-            players = [...newPlayers]
+            players = players
         });
-        socket.on('get_discardCard', ({action, nPlayer, card}) => {
-            console.log(card);
-            defausse.push(card)
+        socket.on('get_discardCard', ({card}) => {
+            discard.push(card)
+            discard = discard
         });
 
-        socket.on('get_distance', ({nPlayer,distance}) => {
-            const newPlayers = [...players]
-            newPlayers[nPlayer].progress = distance
-            players = [...newPlayers]
+        socket.on('get_distance', ({nPlayer, distance}) => {
+            players[nPlayer].progress = distance
+            players = players
 
             console.log(`Distance : ${distance} km`);
         });
@@ -104,7 +128,7 @@
     });
 
     const onDrawCard = () => {
-        if(me.hand.length < 7){
+        if (me.hand.length < 7) {
             socket.emit('send_pickCard', {nPlayer});
 
             let listMessage = document.getElementById('listMessage');
@@ -114,13 +138,11 @@
         }
     };
 
-    const playCard = (target,card) => {
+    const playCard = (target, card) => {
         let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo)
-        const playerMe = players.find((player)=>player.me)
-        const cardIndex = playerMe.hand.findIndex((cardPlayer)=>cardPlayer.id === card.id)
-        playerMe.hand.splice(cardIndex,1)
-        me = {...playerMe}
-
+        const cardIndex = me.hand.findIndex((cardPlayer) => cardPlayer.id === card.id)
+        me.hand.splice(cardIndex, 1)
+        me = me
 
         socket.emit('send_playCard', {
             nPlayer: nPlayer,
@@ -130,10 +152,9 @@
     }
     const discardCard = (card) => {
         let nPlayerIndex = players.findIndex((player) => player.pseudo === me.pseudo)
-        const playerMe = {...me}
-        const cardIndex = playerMe.hand.findIndex((cardPlayer)=>cardPlayer.id === card.id)
-        playerMe.hand.splice(cardIndex,1)
-        me = {...playerMe}
+        const cardIndex = me.hand.findIndex((cardPlayer) => cardPlayer.id === card.id)
+        me.hand.splice(cardIndex, 1)
+        me = me
 
         socket.emit('send_discardCard', {
             nPlayer: nPlayerIndex,
@@ -144,51 +165,54 @@
 
 <svelte:head>
     <title>Home</title>
-    <meta name="description" content="Svelte demo app" />
+    <meta name="description" content="Svelte demo app"/>
 </svelte:head>
 
 <div class="layout">
-    <section class="board">
-        <Board />
-    </section>
+    <section></section>
     <section class="top-player">
-            <Hand isPlayer={false} cards={playersWithoutMe[0]?.hand} position={"top"}/>
-            <PlayerInfo player={playersWithoutMe[0]} position={"top"}/>
-        <PlayerBoard position={"top"} specialCard={playersWithoutMe[0]?.specialCards} stateCard={playersWithoutMe[0]?.state} milesCard={playersWithoutMe[0]?.distanceCard}/>
+        <Hand isPlayer={false} cards={playersWithoutMe[0]?.hand} position={"top"}/>
+        <PlayerInfo player={playersWithoutMe[0]} position={"top"}/>
+        <PlayerBoard position={"top"}
+                     specialCard={playersWithoutMe[0]?.specialCards}
+                     stateCard={playersWithoutMe[0]?.state}
+                     milesCard={playersWithoutMe[0]?.distanceCard}/>
     </section>
     <section>
-        <Chat />
+        <Chat/>
     </section>
     <section class="left-player">
-        <PlayerBoard position={"left"} specialCard={playersWithoutMe[1]?.specialCards} stateCard={playersWithoutMe[1]?.state} milesCard={playersWithoutMe[1]?.distanceCard}/>
+        <PlayerBoard position={"left"}
+                     specialCard={playersWithoutMe[1]?.specialCards}
+                     stateCard={playersWithoutMe[1]?.state}
+                     milesCard={playersWithoutMe[1]?.distanceCard}/>
         <Hand isPlayer={false} cards={playersWithoutMe[1]?.hand}/>
         <PlayerInfo player={playersWithoutMe[1]} position={"left"}/>
     </section>
     <section class="deck-area">
-        <Defausse defausse={defausse}/>
-        <Deck drawCard={onDrawCard} />
+        <div>
+            <Discard discard={discard}/>
+            <Deck drawCard={onDrawCard}/>
+        </div>
+        <Note text={noteInfo.text} isActionNeeded={noteInfo.isActionNeeded}/>
     </section>
     <section class="right-player">
-        <PlayerBoard position={"right"} specialCard={playersWithoutMe[2]?.specialCards}  stateCard={playersWithoutMe[2]?.state} milesCard={playersWithoutMe[2]?.distanceCard}/>
+        <PlayerBoard position={"right"}
+                     specialCard={playersWithoutMe[2]?.specialCards}
+                     stateCard={playersWithoutMe[2]?.state}
+                     milesCard={playersWithoutMe[2]?.distanceCard}/>
         <Hand isPlayer={false} cards={playersWithoutMe[2]?.hand}/>
         <PlayerInfo player={playersWithoutMe[2]} position={"right"}/>
     </section>
     <section></section>
     <section class="active-player">
         <PlayerBoard specialCard={me?.specialCards} stateCard={me?.state} milesCard={me?.distanceCard}/>
-            <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard} discardCard={discardCard}/>
-            <PlayerInfo player={me}/>
+        <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard} discardCard={discardCard}/>
+        <PlayerInfo player={me}/>
     </section>
 </div>
 
 <style>
-    .board {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        flex: 0.6;
-    }
     .active-player {
         gap: 10px;
         display: flex;
@@ -196,6 +220,7 @@
         align-items: center;
         transform: translateY(40px);
     }
+
     .top-player {
         gap: 10px;
         display: flex;
@@ -204,6 +229,7 @@
         align-items: center;
         transform: rotate(180deg);
     }
+
     .left-player {
         gap: 10px;
         display: flex;
@@ -212,6 +238,7 @@
         align-items: center;
         transform: rotate(90deg);
     }
+
     .right-player {
         gap: 10px;
         display: flex;
@@ -227,11 +254,18 @@
         grid-column-gap: 0px;
         grid-row-gap: 0px;
         height: 100vh;
+        background-image: url("../../lib/images/bg_board.jpg");
+        background-size: cover;
     }
 
     .deck-area {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    .deck-area div {
+        display: flex;
     }
 </style>
