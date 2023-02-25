@@ -157,8 +157,8 @@
         <PlayerInfo player={playersWithoutMe[1]} position={"left"}/>
     </section>
     <section class="deck-area">
-        <Deck drawCard={onDrawCard} />
         <Defausse defausse={defausse}/>
+        <Deck drawCard={onDrawCard} />
     </section>
     <section class="right-player">
         <PlayerBoard position={"right"} specialCard={playersWithoutMe[2]?.specialCards}  stateCard={playersWithoutMe[2]?.state} milesCard={playersWithoutMe[2]?.distanceCard}/>

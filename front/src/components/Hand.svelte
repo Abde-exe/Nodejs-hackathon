@@ -38,7 +38,6 @@
         display: flex;
         position: relative;
         justify-content: center;
-        /* height: 0%; */
     }
     #top{
         max-width: 30vw; 
