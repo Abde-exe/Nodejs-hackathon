@@ -11,6 +11,7 @@
     import {canPutCard} from "../../utils/canPutCard.js";
 
 	import PlayerInfo from '../../components/PlayerInfo.svelte';
+	import Defausse from '../../components/Defausse.svelte';
 
 
     const socket = io('http://localhost:9999');
@@ -20,6 +21,8 @@
     let players = [];
     let me = undefined;
     let playersWithoutMe = [];
+    let defausse = [];
+
     $: {
         if (players.length > 0) {
             me = players.find((player)=>player.me)
@@ -73,6 +76,10 @@
 
             players = [...newPlayers]
         });
+        socket.on('get_discardCard', ({action, nPlayer, card}) => {
+            console.log(card);
+            defausse.push(card)
+        });
 
         socket.on('get_distance', ({nPlayer,distance}) => {
             const newPlayers = [...players]
@@ -121,6 +128,18 @@
             card: card
         });
     }
+    const discardCard = (card) => {
+        let nPlayerIndex = players.findIndex((player) => player.pseudo === me.pseudo)
+        const playerMe = {...me}
+        const cardIndex = playerMe.hand.findIndex((cardPlayer)=>cardPlayer.id === card.id)
+        playerMe.hand.splice(cardIndex,1)
+        me = {...playerMe}
+
+        socket.emit('send_discardCard', {
+            nPlayer: nPlayerIndex,
+            card: card
+        });
+    }
 </script>
 
 <svelte:head>
@@ -133,10 +152,8 @@
         <Board />
     </section>
     <section class="top-player">
-        <div style="display: flex;">
             <Hand isPlayer={false} cards={playersWithoutMe[0]?.hand} position={"top"}/>
             <PlayerInfo player={playersWithoutMe[0]} position={"top"}/>
-        </div>
         <PlayerBoard position={"top"} specialCard={playersWithoutMe[0]?.specialCards} stateCard={playersWithoutMe[0]?.state} milesCard={playersWithoutMe[0]?.distanceCard}/>
     </section>
     <section>
@@ -148,6 +165,7 @@
         <PlayerInfo player={playersWithoutMe[1]} position={"left"}/>
     </section>
     <section class="deck-area">
+        <Defausse defausse={defausse}/>
         <Deck drawCard={onDrawCard} />
     </section>
     <section class="right-player">
@@ -158,10 +176,8 @@
     <section></section>
     <section class="active-player">
         <PlayerBoard specialCard={me?.specialCards} stateCard={me?.state} milesCard={me?.distanceCard}/>
-        <div style="display: flex;">
-            <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard}/>
+            <Hand isPlayer={true} cards={me?.hand} me={me} players={playersWithoutMe} playCard={playCard} discardCard={discardCard}/>
             <PlayerInfo player={me}/>
-        </div>
     </section>
 </div>
 

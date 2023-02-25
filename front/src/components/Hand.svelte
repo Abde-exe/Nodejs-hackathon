@@ -7,6 +7,7 @@
     export let me = undefined
     export let players = undefined
     export let playCard = undefined;
+    export let discardCard = undefined;
     export let position = undefined;
 
     let showActionCard = undefined
@@ -29,7 +30,7 @@
         {/each}
     {/if}
     {#if showActionCard && me && players && playCard !== undefined}
-        <Action card={showActionCard} closeAction={closeAction} me={me} players={players} playCard={playCard} />
+        <Action card={showActionCard} closeAction={closeAction} me={me} players={players} playCard={playCard} discardCard={discardCard}/>
     {/if}
 </ul>
 
@@ -39,7 +40,6 @@
         display: flex;
         position: relative;
         justify-content: center;
-        /* height: 0%; */
     }
     #top{
         max-width: 30vw; 
