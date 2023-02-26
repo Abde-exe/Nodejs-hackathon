@@ -18,8 +18,8 @@
 
 <style>
     .info {
-        width: 180px;
-        height: 60px;
+        width: 218px;
+        height: 7vh;
         margin-left: 10px;
         background-color: #cea06a;
         border: 1px white solid;
@@ -28,8 +28,7 @@
         display: flex;
         flex-direction: row;
         position: absolute;
-        right: 0%;
-        bottom: 20%;
+        bottom: 22vh;
 
     }
 
@@ -47,22 +46,24 @@
 
     #top {
         rotate: 180deg;
-        right: -30%;
-        bottom: 20%;
+        right:-20vh;
+        top:13vh;
+
     }
 
     #right {
         rotate: 90deg;
         position: absolute;
-        bottom: 16%;
-        left: 90%;
-    }
+        right:-20vh;
+        top:10vh;
+      }
 
     #left {
         rotate: -90deg;
         position: absolute;
-        bottom: 16%;
-        left: 90%;
+        right:-20vh;
+        top:10vh;
+        
     }
 
 </style>
