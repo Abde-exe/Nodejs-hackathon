@@ -13,6 +13,7 @@
     import PlayerInfo from '../../components/PlayerInfo.svelte';
     import Discard from '../../components/Discard.svelte';
     import Note from "../../components/Note.svelte";
+	import { CardType } from '../../utils/cardTypeEnum';
 
 
     const socket = io('http://localhost:9999');
@@ -70,32 +71,53 @@
                 isActionNeeded: true
             }
         });
-
-        socket.on('get_nextPlayer', (nextPlayer) => {
-            if (nPlayer === nextPlayer) {
-                blockActions(false)
-                noteInfo = {
-                    text: "C'est votre tour. Piochez une carte.",
-                    isActionNeeded: true
-                }
-            } else {
+        socket.on('get_nextPlayer', ({nextPlayer, noDistCard,noDistCardInDeck}) => {
+            console.log('first', noDistCard,noDistCardInDeck)
+            //game finish by 1000km reached
+            if (isDistanceReached()!=false){
                 blockActions(true)
                 noteInfo = {
-                    text: `Tour de ${players[nextPlayer].pseudo}`,
+                    text:`Partie terminée. ${isDistanceReached()} a remporté la course !`,
                     isActionNeeded: false
                 }
             }
-            currentPlayer = nextPlayer
-            console.log(`${nPlayer} is next player`);
-        });
+
+             else if (noDistCard && noDistCardInDeck){
+                blockActions(true)
+                noteInfo = {
+                    text:`Il n'ya plus de carte distance. ${players[nextPlayer].pseudo} a remporté la course !`,
+                    isActionNeeded: false
+                }
+            }
+            else {
+                if (nPlayer === nextPlayer) {
+                    blockActions(false)
+                    noteInfo = {
+                        text: "C'est votre tour. Piochez une carte.",
+                        isActionNeeded: true
+                    }
+                }
+                else {
+                    blockActions(true)
+                    noteInfo = {
+                        text: `Tour de ${players[nextPlayer].pseudo}`,
+                        isActionNeeded: false
+                    }
+                }
+                currentPlayer = nextPlayer
+                console.log(`${nPlayer} is next player`);
+            }
+            
+        }
+        );
 
         socket.on('get_playCard', ({nPlayer, card}) => {
             console.log(`${nPlayer} get ${card.name}`);
 
-            if (card.type === "Spéciale") players[nPlayer].specialCards.push(card)
-            else if (card.type === "Bonus" || card.type === "Malus") {
+            if (card.type === CardType.SPEC) players[nPlayer].specialCards.push(card)
+            else if (card.type === CardType.BON || card.type === CardType.MAL) {
                 players[nPlayer].state = card
-            } else if (card.type === "Distance") {
+            } else if (card.type === CardType.DIST) {
                 players[nPlayer].distanceCard = card
             }
 
@@ -161,6 +183,18 @@
             card: card
         });
     }
+    const isDistanceReached = () => {
+        let result = false
+    players.forEach(player => {
+        //un joueur a parcouru 1000km
+        if (player.progress >= 1000){
+            result = player.pseudo
+        }
+    }
+    );
+    return result
+}
+
 </script>
 
 <svelte:head>
