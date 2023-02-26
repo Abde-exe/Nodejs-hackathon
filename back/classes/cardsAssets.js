@@ -64,7 +64,7 @@ export const specialCards = [
   },
   {
     id: 6,
-    name: 'Bague de Sureau',
+    name: 'Baguette de sureau',
     description: '',
     type: CardType.SPEC,
     number: 1,
@@ -72,7 +72,7 @@ export const specialCards = [
   },
   {
     id: 7,
-    name: "Cape d'invisibilité",
+    name: "Cape invisible",
     description: '',
     type: CardType.SPEC,
     number: 1,
@@ -80,7 +80,7 @@ export const specialCards = [
   },
   {
     id: 8,
-    name: 'Phénix',
+    name: 'Phenix',
     description: '',
     type: CardType.SPEC,
     number: 1,
@@ -148,7 +148,7 @@ export const malusCards = [
   },
   {
     id: 16,
-    name: 'Diffinito',
+    name: 'Diffindo',
     description: '',
     type: CardType.MAL,
     number: 3,
@@ -156,7 +156,7 @@ export const malusCards = [
   },
   {
     id: 17,
-    name: 'Imobilis',
+    name: 'Immobulus',
     description: '',
     type: CardType.MAL,
     number: 5,
@@ -378,7 +378,7 @@ export const characterCards = [
 //   },
 //   {
 //     id: 16,
-//     name: 'Diffinito',
+//     name: 'Diffindo',
 //     description: '',
 //     type: CardType.MAL,
 //     number: 3,
@@ -386,7 +386,7 @@ export const characterCards = [
 //   },
 //   {
 //     id: 17,
-//     name: 'Imobilis',
+//     name: 'Immobulus',
 //     description: '',
 //     type: CardType.MAL,
 //     number: 5,

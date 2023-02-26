@@ -2,7 +2,7 @@ import {createServer} from "http";
 import {Server} from "socket.io";
 import {createGame} from "./utils/createGame.js";
 import {Card} from "./classes/Card.js";
-import { CardType } from "./classes/cardsAssets.js";
+import {CardType} from "./classes/cardsAssets.js";
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -97,8 +97,7 @@ io.on("connection", (socket) => {
     socket.on("send_playCard", ({nPlayer, nPlayer2, card}) => {
         const cardWithMethod = jsonGame.players[nPlayer].hand.find(cardInHand => cardInHand.id === card.id);
         jsonGame.players[nPlayer].playCard(cardWithMethod, jsonGame.players[nPlayer2])
-        
-        
+
 
         if (cardWithMethod.type === CardType.DIST) {
             sendAll("get_distance", {
@@ -114,9 +113,9 @@ io.on("connection", (socket) => {
             card: cardWithMethod,
         })
         sendAll("get_nextPlayer", {
-            nextPlayer :jsonGame.passPlayer(), 
-            noDistCard:noDistCardInHands(),
-            noDistCardInDeck:noDistCardInDeck(jsonGame.deck)
+            nextPlayer: jsonGame.passPlayer(),
+            noDistCard: noDistCardInHands(),
+            noDistCardInDeck: noDistCardInDeck(jsonGame.deck)
         })
     });
 
@@ -129,36 +128,32 @@ io.on("connection", (socket) => {
             card: card
         });
 
-        
+
         sendAll("get_nextPlayer", {
-            nextPlayer :jsonGame.passPlayer(), 
-            noDistCard:noDistCardInHands(),
-            noDistCardInDeck:noDistCardInDeck(jsonGame.deck)
+            nextPlayer: jsonGame.passPlayer(),
+            noDistCard: noDistCardInHands(),
+            noDistCardInDeck: noDistCardInDeck(jsonGame.deck)
         })
     });
 });
 
 const noDistCardInDeck = (deck) => {
     var result = true
-    console.log('deck.length', deck.length)
     deck.forEach(card => {
-    if (card.type === CardType.DIST) {
-        console.log('card.type', card.type)
-    }
-})
-return result
+    })
+    return result
 }
 const noDistCardInHands = () => {
-var result = true
-        jsonGame.players.forEach(player => {
-            player.hand.forEach(card => {
-                if (card.type===CardType.DIST){
-                    result = false
-                }
-            })
-        });
+    var result = true
+    jsonGame.players.forEach(player => {
+        player.hand.forEach(card => {
+            if (card.type === CardType.DIST) {
+                result = false
+            }
+        })
+    });
     return result
-    }
+}
 
 httpServer.listen(9999, () => {
     console.log(`Socket IO is running on port 9999.`);

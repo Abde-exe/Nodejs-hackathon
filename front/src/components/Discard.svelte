@@ -5,7 +5,7 @@
 </script>
 
 <div class="deck">
-    <img src={discard.length>0 ? discard[0]?.img : discard_img} alt="back of the card"/>
+    <img src={discard.length>0 ? discard[discard.length-1]?.img : discard_img} alt="back of the card"/>
 </div>
 
 <style>

@@ -11,7 +11,7 @@
     <div class="playerTextInfo">
         <h4>{player?.pseudo}</h4>
         <p style="font-size: smaller;">Avancée : {player?.progress || 0} km</p>
-        <p style="font-size: smaller;">Etat : { player?.state.name || "Normal"}</p>
+        <p style="font-size: smaller;">Etat : { player?.state?.name || "Normal"}</p>
     </div>
 
 </div>
@@ -41,7 +41,6 @@
 
     .playerTextInfo {
         color: white;
-        font-size: hvw;
         margin-left: 8px;
     }
 

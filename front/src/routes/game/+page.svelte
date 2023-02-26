@@ -1,7 +1,6 @@
 <script>
     import {io} from 'socket.io-client';
     import {onDestroy, onMount} from 'svelte';
-    import Board from "../../components/Board.svelte";
     import Hand from "../../components/Hand.svelte";
     import PlayerBoard from "../../components/PlayerBoard.svelte";
     import Deck from "../../components/Deck.svelte";
@@ -9,12 +8,12 @@
     import Chat2 from "../../components/Chat2.svelte";
 
     import {blockActions} from "../../utils/blockActions.js";
-    import {canPutCard} from "../../utils/canPutCard.js";
 
     import PlayerInfo from '../../components/PlayerInfo.svelte';
     import Discard from '../../components/Discard.svelte';
     import Note from "../../components/Note.svelte";
 	import { CardType } from '../../utils/cardTypeEnum';
+    import {checkSpecialCardAgainstMalus} from "../../utils/checkSpecialCardAgainstMalus.js";
 
 
     const socket = io('http://localhost:9999');
@@ -72,25 +71,23 @@
                 isActionNeeded: true
             }
         });
+
         socket.on('get_nextPlayer', ({nextPlayer, noDistCard,noDistCardInDeck}) => {
             console.log('first', noDistCard,noDistCardInDeck)
             //game finish by 1000km reached
-            if (isDistanceReached()!=false){
+            if (isDistanceReached()!==false){
                 blockActions(true)
                 noteInfo = {
                     text:`Partie terminée. ${isDistanceReached()} a remporté la course !`,
                     isActionNeeded: false
                 }
-            }
-
-             else if (noDistCard && noDistCardInDeck){
+            } else if (noDistCard && noDistCardInDeck){
                 blockActions(true)
                 noteInfo = {
-                    text:`Il n'ya plus de carte distance. ${players[nextPlayer].pseudo} a remporté la course !`,
+                    text:`Il n'y a plus de carte distance. ${players[nextPlayer].pseudo} a remporté la course !`,
                     isActionNeeded: false
                 }
-            }
-            else {
+            } else {
                 if (nPlayer === nextPlayer) {
                     blockActions(false)
                     noteInfo = {
@@ -115,8 +112,12 @@
         socket.on('get_playCard', ({nPlayer, card}) => {
             console.log(`${nPlayer} get ${card.name}`);
 
-            if (card.type === CardType.SPEC) players[nPlayer].specialCards.push(card)
-            else if (card.type === CardType.BON || card.type === CardType.MAL) {
+            if (card.type === CardType.SPEC) {
+                players[nPlayer].specialCards.push(card)
+                if(checkSpecialCardAgainstMalus(card.name, players[nPlayer].state.name)){
+                    players[nPlayer].state = undefined
+                }
+            } else if (card.type === CardType.BON || card.type === CardType.MAL) {
                 players[nPlayer].state = card
             } else if (card.type === CardType.DIST) {
                 players[nPlayer].distanceCard = card
@@ -152,7 +153,7 @@
 
     const onDrawCard = () => {
         if (me.hand.length < 7) {
-            socket.emit('send_pickCard', {nPlayer});
+            socket.emit('send_pickCard', { nPlayer });
 
             let listMessage = document.getElementById('listMessage');
             let message = document.createElement('li');
@@ -198,15 +199,14 @@
     }
     const isDistanceReached = () => {
         let result = false
-    players.forEach(player => {
-        //un joueur a parcouru 1000km
-        if (player.progress >= 1000){
-            result = player.pseudo
-        }
+        players.forEach(player => {
+            //un joueur a parcouru 1000km
+            if (player.progress >= 1000){
+                result = player.pseudo
+            }
+        } );
+        return result
     }
-    );
-    return result
-}
 
 </script>
 

@@ -1,33 +1,32 @@
-import { CardType } from "./cardTypeEnum";
-
 export function canPutCard(player, card) {
     if (player.me) {
-        if (card.type === CardType.SPEC || card.type === CardType.PERS) {
+        if (card.type === "Spéciale" || card.type === "Personnage") {
             return true
-        } else if(card.type === CardType.DIST) {
-            if(player.state.type === CardType.MAL){
-                if(player.state?.name === "Impedimenta"){
+        } else if (card.type === "Distance") {
+            if (player.state.type === "Malus") {
+                if (player.state?.name === "Impedimenta") {
                     return card.distance <= 50
                 }
                 return false
             }
             return true
-        } else if (card.type === CardType.BON) {
-            switch (player.state?.name) {
+        } else if (card.type === "Bonus") {
+            console.log("ici",player.state.name)
+            switch (player.state.name) {
                 case "Cognard":
                     return card.name === "Vulnera Sanentur";
                     break;
                 case "Expeliarmus":
                     return card.name === "Protego";
                     break;
-                case "Diffinito":
+                case "Diffindo":
                     return card.name === "Reparo";
                     break;
-                case "Imobilis":
-                    return card.name === "Finite Incantatem";
+                case "Immobulus":
+                    return card.name === "Mobilicorpus";
                     break;
                 case "Impedimenta":
-                    return card.name === "Mobilicorpus";
+                    return card.name === "Finite Incantatem";
                     break;
                 default:
                     return false
@@ -35,27 +34,40 @@ export function canPutCard(player, card) {
             }
         }
     } else {
-        if (card.type === CardType.MAL) {
-            switch (player.state?.name) {
+        if (card.type === "Malus") {
+            if (player.state.type === "Malus") {
+                return false;
+            }
+
+            switch (player.state.name) {
                 case "Vulnera Sanentur":
                     return card.name === "Cognard";
-                    break;
                 case "Protego":
                     return card.name === "Expeliarmus";
-                    break;
                 case "Reparo":
-                    return card.name === "Diffinito";
-                    break;
+                    return card.name === "Diffindo";
                 case "Finite Incantatem":
-                    return card.name === "Imobilis";
-                    break;
-                case "Mobilicorpus":
                     return card.name === "Impedimenta";
-                    break;
+                case "Mobilicorpus":
+                    return card.name === "Immobulus";
                 default:
-                    return true
-                    break;
+                    break
             }
+
+            switch (card.name) {
+                case "Cognard":
+                    return !player.specialCards.some(carte => carte.name === "Cape invisible");
+                case "Expeliarmus":
+                    return !player.specialCards.some(carte => carte.name === "Baguette de sureau");
+                case "Diffindo":
+                    return !player.specialCards.some(carte => carte.name === "Phenix");
+                case "Impedimenta":
+                    return !player.specialCards.some(carte => carte.name === "Voiture volante");
+                default:
+                    break
+            }
+
+            return true;
         }
         return false
     }
