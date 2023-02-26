@@ -18,7 +18,7 @@
 
 <style>
     .info {
-        width: 218px;
+        width: 10vw;
         height: 7vh;
         margin-left: 10px;
         background-color: #cea06a;
@@ -28,41 +28,41 @@
         display: flex;
         flex-direction: row;
         position: absolute;
-        bottom: 22vh;
+        bottom: 10vh;
+        left:-12vw;
 
     }
 
     .playerImg {
-        height: 50px;
-        width: 50px;
-        border-radius: 25px;
+        height: 3vw;
+        width: 3vw;
+        border-radius: 1.5vw;
     }
 
     .playerTextInfo {
         color: white;
-        font-size: medium;
+        font-size: hvw;
         margin-left: 8px;
     }
 
     #top {
         rotate: 180deg;
         right:-20vh;
-        top:13vh;
+        top:14vh;
 
     }
 
     #right {
         rotate: 90deg;
         position: absolute;
-        right:-20vh;
         top:10vh;
+        left:-9vw
       }
 
     #left {
         rotate: -90deg;
         position: absolute;
-        right:-20vh;
-        top:10vh;
+        left:-9vw;
         
     }
 
