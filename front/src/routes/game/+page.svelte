@@ -6,6 +6,7 @@
     import PlayerBoard from "../../components/PlayerBoard.svelte";
     import Deck from "../../components/Deck.svelte";
     import Chat from "../../components/Chat.svelte";
+    import Chat2 from "../../components/Chat2.svelte";
 
     import {blockActions} from "../../utils/blockActions.js";
     import {canPutCard} from "../../utils/canPutCard.js";
@@ -213,7 +214,8 @@
                      milesCard={playersWithoutMe[0]?.distanceCard}/>
     </section>
     <section>
-        <Chat/>
+        <!-- <Chat/> May to implement on further improvement -->
+        <Chat2/>
     </section>
     <section class="left-player">
         <PlayerBoard position={"left"}
