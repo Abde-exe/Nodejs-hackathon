@@ -28,7 +28,7 @@
         display: flex;
         flex-direction: row;
         position: absolute;
-        right: -30%;
+        right: 0%;
         bottom: 20%;
 
     }
