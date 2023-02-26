@@ -4,6 +4,7 @@
 <section>
     <div class="chat2">
         <ul id="listMessage">
+            <li>// Test ne pas prendre en compte</li>
         </ul>
     </div>
 
@@ -16,7 +17,7 @@
     bottom: 20px;
     right: 20px;
     padding: 15px;
-    background: rgb(5, 67, 64);
+    background: #000c1ce0;
     border-radius: 10px;
     height: 120px;
     width: 300px;
@@ -35,19 +36,19 @@
 
 /* Track */
 .chat2 ul::-webkit-scrollbar-track {
-    background: rgb(8, 103, 98);
+    background: #0d233f;
     border-radius: 10px;
 }
 
 /* Handle */
 .chat2 ul::-webkit-scrollbar-thumb {
-    background: rgb(4, 53, 51);
+    background: #000c1c;
     border-radius: 10px;
 }
 
 /* Handle on hover */
 .chat2 ul::-webkit-scrollbar-thumb:hover {
-    background: rgb(3, 43, 42);
+    background: #000812;
 }
 
 .chat2 ul li:not(:last-child) { 

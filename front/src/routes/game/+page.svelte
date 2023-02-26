@@ -139,6 +139,18 @@
         }
     };
 
+    const addActionInChat = (player1, card, player2) => {
+        let listMessage = document.getElementById('listMessage');
+        let message = document.createElement('li');
+
+        if(player2){
+            message.textContent = player1 + " utilise " + card + " contre " + player2;
+        } else {
+            message.textContent = player1 + " utilise " + card;
+        }
+        listMessage.appendChild(message);
+    }
+
     const playCard = (target, card) => {
         let nPlayer2 = players.findIndex((player) => player.pseudo === target.pseudo)
         const cardIndex = me.hand.findIndex((cardPlayer) => cardPlayer.id === card.id)
