@@ -1,16 +1,18 @@
+import { CardType } from "./cardTypeEnum";
+
 export function canPutCard(player, card) {
     if (player.me) {
-        if (card.type === "Spéciale" || card.type === "Personnage") {
+        if (card.type === CardType.SPEC || card.type === CardType.PERS) {
             return true
-        } else if(card.type === "Distance") {
-            if(player.state.type === "Malus"){
+        } else if(card.type === CardType.DIST) {
+            if(player.state.type === CardType.MAL){
                 if(player.state?.name === "Impedimenta"){
                     return card.distance <= 50
                 }
                 return false
             }
             return true
-        } else if (card.type === "Bonus") {
+        } else if (card.type === CardType.BON) {
             switch (player.state?.name) {
                 case "Cognard":
                     return card.name === "Vulnera Sanentur";
@@ -33,7 +35,7 @@ export function canPutCard(player, card) {
             }
         }
     } else {
-        if (card.type === "Malus") {
+        if (card.type === CardType.MAL) {
             switch (player.state?.name) {
                 case "Vulnera Sanentur":
                     return card.name === "Cognard";
