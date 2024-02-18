@@ -1,5 +1,5 @@
 # Projet de groupe pour le Hackaton node.js thème Harry Potter
-[présentation](Prez Pandargent.pdf)
+[présentation](prez_pandargent.pdf)
 Jeu de cartes inspiré du milles bornes dans l'univers d'Harry Potter.
 - Front : **Svelte.js**
 - Back-end : **Node.js**
